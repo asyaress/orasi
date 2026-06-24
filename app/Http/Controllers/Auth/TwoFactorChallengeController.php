@@ -12,11 +12,23 @@ use Illuminate\Validation\ValidationException;
 
 class TwoFactorChallengeController extends Controller
 {
-    public function show(Request $request)
+    public function show(Request $request, TwoFactorService $twofa)
     {
         $userId = $request->session()->get('2fa:user:id');
         if (!$userId) {
             return redirect()->route('login');
+        }
+
+        /** @var User|null $user */
+        $user = User::query()->find($userId);
+        if (!$user || !$twofa->hasAnyDecryptableDevice($user)) {
+            if ($user) {
+                $twofa->resetForUser($user);
+            }
+            $request->session()->forget('2fa:user:id');
+
+            return redirect()->route('login')
+                ->with('warning', 'Perangkat 2FA perlu didaftarkan ulang. Silakan login dan setup 2FA lagi.');
         }
 
         return view('auth.two-factor-challenge');
@@ -41,9 +53,12 @@ class TwoFactorChallengeController extends Controller
             ->whereNotNull('confirmed_at')
             ->get();
 
-        if ($devices->isEmpty()) {
+        if ($devices->isEmpty() || !$twofa->hasAnyDecryptableDevice($user)) {
+            $twofa->resetForUser($user);
             $request->session()->forget('2fa:user:id');
-            return redirect()->route('login');
+
+            return redirect()->route('login')
+                ->with('warning', 'Perangkat 2FA perlu didaftarkan ulang. Silakan login dan setup 2FA lagi.');
         }
 
         $data = $request->validate([

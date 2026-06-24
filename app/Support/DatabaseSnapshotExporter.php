@@ -17,7 +17,6 @@ class DatabaseSnapshotExporter
         'orasi_ilmiahs',
         'guru_besars',
         'pengumumans',
-        'two_factor_devices',
     ];
 
     public function export(?string $targetDirectory = null): array
@@ -31,7 +30,9 @@ class DatabaseSnapshotExporter
         $counts = [];
 
         foreach (self::TABLES as $table) {
-            $rows = DB::table($table)->orderBy('id')->get()->map(fn ($row) => (array) $row)->all();
+            $rows = DB::table($table)->orderBy('id')->get()
+                ->map(fn ($row) => $this->normalizeRow($table, (array) $row))
+                ->all();
             $counts[$table] = count($rows);
 
             File::put(
@@ -53,5 +54,22 @@ class DatabaseSnapshotExporter
         );
 
         return $manifest;
+    }
+
+    /**
+     * 2FA secrets are bound to APP_KEY and must not be copied across environments.
+     *
+     * @param  array<string, mixed>  $row
+     * @return array<string, mixed>
+     */
+    private function normalizeRow(string $table, array $row): array
+    {
+        if ($table === 'users') {
+            $row['two_factor_secret'] = null;
+            $row['two_factor_recovery_codes'] = null;
+            $row['two_factor_confirmed_at'] = null;
+        }
+
+        return $row;
     }
 }

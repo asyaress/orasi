@@ -78,6 +78,10 @@ class DatabaseSnapshotImporter
             return;
         }
 
+        if ($table === 'users') {
+            $rows = array_map(fn (array $row) => $this->normalizeUserRow($row), $rows);
+        }
+
         foreach (array_chunk($rows, 100) as $chunk) {
             DB::table($table)->insert($chunk);
         }
@@ -87,5 +91,18 @@ class DatabaseSnapshotImporter
         if ($maxId && DB::getDriverName() === 'mysql') {
             DB::statement('ALTER TABLE `'.$table.'` AUTO_INCREMENT = '.((int) $maxId + 1));
         }
+    }
+
+    /**
+     * @param  array<string, mixed>  $row
+     * @return array<string, mixed>
+     */
+    private function normalizeUserRow(array $row): array
+    {
+        $row['two_factor_secret'] = null;
+        $row['two_factor_recovery_codes'] = null;
+        $row['two_factor_confirmed_at'] = null;
+
+        return $row;
     }
 }

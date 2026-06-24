@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
 use PragmaRX\Google2FA\Google2FA;
@@ -66,7 +67,29 @@ class TwoFactorService
             return null;
         }
 
-        return Crypt::decryptString($encrypted);
+        try {
+            return Crypt::decryptString($encrypted);
+        } catch (DecryptException) {
+            return null;
+        }
+    }
+
+    public function hasAnyDecryptableDevice(User $user): bool
+    {
+        return $user->twoFactorDevices()
+            ->whereNotNull('confirmed_at')
+            ->get()
+            ->contains(fn ($device) => $this->decryptSecret($device->secret) !== null);
+    }
+
+    public function resetForUser(User $user): void
+    {
+        $user->twoFactorDevices()->delete();
+        $user->forceFill([
+            'two_factor_secret' => null,
+            'two_factor_recovery_codes' => null,
+            'two_factor_confirmed_at' => null,
+        ])->save();
     }
 
     public function generateRecoveryCodes(int $count = 8): array

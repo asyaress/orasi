@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\RecaptchaService;
+use App\Services\TwoFactorService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -19,7 +20,7 @@ class LoginController extends Controller
         ]);
     }
 
-    public function store(Request $request, RecaptchaService $recaptcha)
+    public function store(Request $request, RecaptchaService $recaptcha, TwoFactorService $twofa)
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -55,6 +56,14 @@ class LoginController extends Controller
         // If 2FA not configured yet, redirect to setup
         if (!$user->two_factor_confirmed_at) {
             return redirect()->route('two-factor.setup');
+        }
+
+        // Secrets encrypted with a different APP_KEY cannot be decrypted — force re-setup.
+        if (!$twofa->hasAnyDecryptableDevice($user)) {
+            $twofa->resetForUser($user);
+
+            return redirect()->route('two-factor.setup')
+                ->with('warning', 'Perangkat 2FA perlu didaftarkan ulang karena kunci aplikasi berubah.');
         }
 
         // 2FA challenge required after password login
