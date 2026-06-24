@@ -1,6 +1,6 @@
 <head>
     <title>@yield('title', 'Orasi Ilmiah Guru Besar Universitas Mulawarman')</title>
-    <link rel="icon" href="{{ asset('images/icon.png') }}" type="image/gif" sizes="16x16">
+    <link rel="icon" href="{{ asset('logo/unmul-20260408145731-e033c2.png') }}" type="image/png">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta

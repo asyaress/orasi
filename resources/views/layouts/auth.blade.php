@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Admin Orasi — Universitas Mulawarman')</title>
-    <link rel="icon" href="{{ asset('images/icon.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('logo/unmul-20260408145731-e033c2.png') }}" type="image/png">
 
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 
