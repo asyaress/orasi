@@ -43,15 +43,46 @@ class SyncPublicHtmlCommand extends Command
 
     private function resolvePublicHtmlDirectory(string $appRoot): string
     {
-        $configured = $this->option('public-html')
-            ?: env('ORASI_PUBLIC_HTML_DIR')
-            ?: dirname($appRoot).DIRECTORY_SEPARATOR.'public_html';
+        $appRoot = rtrim(str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $appRoot), DIRECTORY_SEPARATOR);
+        $configured = $this->option('public-html') ?: env('ORASI_PUBLIC_HTML_DIR');
+
+        if (! $configured) {
+            $configured = dirname($appRoot).DIRECTORY_SEPARATOR.'public_html';
+        } elseif (! $this->isAbsolutePath($configured)) {
+            $configured = dirname($appRoot).DIRECTORY_SEPARATOR.ltrim($configured, DIRECTORY_SEPARATOR);
+        }
 
         $configured = rtrim(str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $configured), DIRECTORY_SEPARATOR);
+
+        $this->guardPublicHtmlOutsideApp($appRoot, $configured);
 
         File::ensureDirectoryExists($configured);
 
         return $configured;
+    }
+
+    private function guardPublicHtmlOutsideApp(string $appRoot, string $publicHtml): void
+    {
+        $appRootReal = realpath($appRoot) ?: $appRoot;
+        $publicHtmlReal = realpath($publicHtml) ?: $publicHtml;
+
+        $appRootNormalized = rtrim(str_replace('\\', '/', $appRootReal), '/');
+        $publicHtmlNormalized = rtrim(str_replace('\\', '/', $publicHtmlReal), '/');
+
+        if ($publicHtmlNormalized === $appRootNormalized
+            || str_starts_with($publicHtmlNormalized.'/', $appRootNormalized.'/')) {
+            throw new RuntimeException(
+                'public_html tidak boleh berada di dalam folder aplikasi orasi. '.
+                'Set ORASI_PUBLIC_HTML_DIR ke folder di luar orasi, contoh: /home/orasi/public_html'
+            );
+        }
+    }
+
+    private function isAbsolutePath(string $path): bool
+    {
+        return str_starts_with($path, '/')
+            || str_starts_with($path, '\\')
+            || (bool) preg_match('/^[A-Za-z]:[\\\\\\/]/', $path);
     }
 
     private function mirrorPublicDirectory(string $source, string $target): int
