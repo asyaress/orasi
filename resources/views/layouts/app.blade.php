@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="orasi-booting">
+<html lang="id" class="orasi-booting">
 @include('partials.head')
 
 <body class="@yield('body_class')">
