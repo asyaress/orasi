@@ -13,7 +13,7 @@ class SyncPublicHtmlCommand extends Command
                             {--public-html= : Direktori document root (public_html)}
                             {--app-root= : Direktori root aplikasi Laravel}';
 
-    protected $description = 'Salin isi public/ ke public_html dan tautkan storage ke public_html/storage';
+    protected $description = 'Salin isi public/ ke public_html bawaan server (sejajar folder orasi)';
 
     public function handle(): int
     {
@@ -25,14 +25,12 @@ class SyncPublicHtmlCommand extends Command
 
         $publicHtml = $this->resolvePublicHtmlDirectory($appRoot);
 
-        File::ensureDirectoryExists($publicHtml);
-
         $source = public_path();
         $copied = $this->mirrorPublicDirectory($source, $publicHtml);
         $this->writeSharedHostingIndex($appRoot, $publicHtml);
         $this->linkPublicStorage($appRoot, $publicHtml);
 
-        $this->info('Sinkronisasi public_html selesai.');
+        $this->info('Sinkronisasi ke public_html bawaan server selesai.');
         $this->line("  App root     : {$appRoot}");
         $this->line("  Public HTML  : {$publicHtml}");
         $this->line("  File disalin : {$copied}");
@@ -47,7 +45,7 @@ class SyncPublicHtmlCommand extends Command
         $configured = $this->option('public-html') ?: env('ORASI_PUBLIC_HTML_DIR');
 
         if (! $configured) {
-            $configured = dirname($appRoot).DIRECTORY_SEPARATOR.'public_html';
+            $configured = $this->detectServerPublicHtml($appRoot);
         } elseif (! $this->isAbsolutePath($configured)) {
             $configured = dirname($appRoot).DIRECTORY_SEPARATOR.ltrim($configured, DIRECTORY_SEPARATOR);
         }
@@ -56,9 +54,29 @@ class SyncPublicHtmlCommand extends Command
 
         $this->guardPublicHtmlOutsideApp($appRoot, $configured);
 
-        File::ensureDirectoryExists($configured);
+        if (! is_dir($configured)) {
+            throw new RuntimeException(
+                "Folder public_html bawaan server tidak ditemukan di: {$configured}\n".
+                'Gunakan folder public_html yang sudah ada di hosting (sejajar dengan folder orasi).'
+            );
+        }
 
-        return $configured;
+        return realpath($configured) ?: $configured;
+    }
+
+    private function detectServerPublicHtml(string $appRoot): string
+    {
+        $home = env('HOME') ?: ($_SERVER['HOME'] ?? null);
+
+        if (is_string($home) && $home !== '') {
+            $homePublicHtml = rtrim($home, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'public_html';
+
+            if (is_dir($homePublicHtml)) {
+                return $homePublicHtml;
+            }
+        }
+
+        return dirname($appRoot).DIRECTORY_SEPARATOR.'public_html';
     }
 
     private function guardPublicHtmlOutsideApp(string $appRoot, string $publicHtml): void
