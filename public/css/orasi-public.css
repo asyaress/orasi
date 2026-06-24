@@ -1,0 +1,454 @@
+/**
+ * Orasi public — dimuat setelah style.css.
+ * Navbar transparan di atas halaman; navy hanya setelah scroll (.smaller).
+ */
+
+body.page-home,
+body.page-home #wrapper {
+    background: transparent;
+}
+
+body.page-home .orasi-home {
+    background: transparent !important;
+}
+
+body.page-home .orasi-home {
+    --orasi-header-height: 78px;
+}
+
+@media (max-width: 991.98px) {
+    body.page-home .orasi-home {
+        --orasi-header-height: 64px;
+    }
+}
+
+@media (max-width: 430px) {
+    body.page-home .orasi-home {
+        --orasi-header-height: 58px;
+    }
+}
+
+/* Navbar tema kuning guru besar */
+header.header-full.transparent:not(.smaller):not(.header-mobile) {
+    background: linear-gradient(180deg, #f3bd42 0%, #efb12c 100%) !important;
+    background-color: #efb12c !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: 0 8px 24px rgba(15, 19, 34, 0.14) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+header.header-full.transparent:not(.smaller):not(.header-mobile) .container-fluid,
+header.header-full.transparent:not(.smaller):not(.header-mobile) .de-flex,
+header.header-full.transparent:not(.smaller):not(.header-mobile) .row,
+header.header-full.transparent:not(.smaller):not(.header-mobile) .col-md-12 {
+    background: transparent !important;
+}
+
+header.header-full.transparent.smaller:not(.header-mobile) {
+    background: linear-gradient(180deg, #efb12c 0%, #e6a91f 100%) !important;
+    background-color: #e6a91f !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: 0 10px 26px rgba(15, 19, 34, 0.16) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+body.page-home header.header-full.transparent,
+body.page-home header.header-full.transparent.smaller,
+body.page-home header.header-full.transparent.header-mobile {
+    background: linear-gradient(180deg, #f3bd42 0%, #efb12c 100%) !important;
+    background-color: #efb12c !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: 0 8px 24px rgba(15, 19, 34, 0.14) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18) !important;
+}
+
+body.page-home header.header-full.transparent .container-fluid,
+body.page-home header.header-full.transparent .de-flex,
+body.page-home header.header-full.transparent .row,
+body.page-home header.header-full.transparent .col-md-12,
+body.page-home header.header-full.transparent .menu_side_area {
+    background: transparent !important;
+}
+
+body.page-home header.header-full.transparent .orasi-nav-shift #mainmenu a,
+body.page-home header.header-full.transparent .orasi-nav-shift #mainmenu > li::before,
+body.page-home header.header-full.transparent.smaller .orasi-nav-shift #mainmenu a,
+body.page-home header.header-full.transparent.smaller .orasi-nav-shift #mainmenu > li::before,
+body.page-home header.header-full.transparent.header-mobile .orasi-nav-shift #mainmenu a,
+body.page-home header.header-full.transparent.header-mobile .orasi-nav-shift #mainmenu > li::before {
+    color: #18213a !important;
+    opacity: 0.98 !important;
+}
+
+/* Hero: backdrop tetap full screen, overlay gelap baru dimulai setelah header */
+.orasi-hero-backdrop,
+.orasi-hero-video,
+.orasi-hero-overlay {
+    inset: 0 !important;
+}
+
+.orasi-hero-overlay {
+    background:
+        linear-gradient(
+            180deg,
+            transparent 0%,
+            transparent var(--orasi-header-height, 78px),
+            rgba(11, 16, 31, 0.06) calc(var(--orasi-header-height, 78px) + 48px),
+            rgba(11, 16, 31, 0.42) 100%
+        ),
+        linear-gradient(
+            90deg,
+            transparent 0%,
+            transparent 32%,
+            rgba(15, 19, 34, 0.14) 58%,
+            rgba(15, 19, 34, 0.22) 100%
+        );
+}
+
+/* Responsive hardening across public portal pages */
+html {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    width: 100%;
+    max-width: 100%;
+}
+
+img,
+video,
+iframe,
+canvas,
+svg {
+    max-width: 100%;
+}
+
+#wrapper,
+.orasi-home,
+.orasi-page-banner,
+.orasi-hero,
+section {
+    max-width: 100%;
+}
+
+@media (min-width: 1400px) {
+    .container {
+        max-width: min(1320px, calc(100vw - 72px));
+    }
+}
+
+@media (min-width: 1800px) {
+    .container {
+        max-width: min(1480px, calc(100vw - 112px));
+    }
+}
+
+@media (max-width: 1199.98px) {
+    .pt90 {
+        padding-top: 76px;
+    }
+
+    .pb90 {
+        padding-bottom: 76px;
+    }
+
+    .orasi-chart-wrap-lg {
+        min-height: 330px;
+    }
+
+    .orasi-chart-wrap-xl {
+        min-height: 380px;
+    }
+}
+
+@media (max-width: 991.98px) {
+    body {
+        font-size: 15px;
+    }
+
+    .container,
+    .container-fluid {
+        padding-left: max(18px, env(safe-area-inset-left));
+        padding-right: max(18px, env(safe-area-inset-right));
+    }
+
+    header.header-full.transparent.header-mobile {
+        position: fixed;
+        z-index: 1100;
+    }
+
+    header.header-mobile .orasi-nav-shift {
+        display: none !important;
+    }
+
+    header.header-mobile.orasi-menu-open .orasi-nav-shift {
+        display: block !important;
+    }
+
+    header.header-mobile .de-flex {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+    }
+
+    header.header-mobile .de-flex-col:first-child {
+        min-width: 0;
+    }
+
+    header.header-mobile .header-col-mid {
+        grid-column: 1 / -1;
+        order: 3;
+        width: 100%;
+    }
+
+    header.header-mobile .orasi-header-actions {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    header.header-mobile .orasi-nav-shift #mainmenu {
+        width: 100%;
+        max-height: calc(100svh - var(--orasi-mobile-header-height, 64px));
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        border-radius: 0;
+    }
+
+    header.header-mobile .orasi-nav-shift #mainmenu a.menu-item {
+        min-height: 46px;
+        padding: 12px 8px;
+        white-space: normal;
+        line-height: 1.25;
+    }
+
+    header.header-mobile .orasi-nav-shift #mainmenu a.active::after {
+        display: block;
+    }
+
+    .orasi-page-banner-shell {
+        padding-top: calc(var(--orasi-header-height, 64px) + 56px);
+        padding-bottom: 58px;
+    }
+
+    .orasi-page-banner-title {
+        letter-spacing: 0;
+        line-height: 1.04;
+    }
+
+    .orasi-professor-meaning-panel {
+        min-height: auto;
+    }
+
+    .orasi-professor-meaning-title {
+        max-width: 100%;
+        letter-spacing: 0;
+        line-height: 1.08;
+    }
+
+    .orasi-professor-meaning-copy {
+        max-width: 100%;
+    }
+
+    .orasi-chart-head {
+        align-items: flex-start;
+    }
+
+    .orasi-chart-wrap,
+    .orasi-chart-wrap-lg,
+    .orasi-chart-wrap-md,
+    .orasi-chart-wrap-xl {
+        min-height: 320px;
+    }
+
+    .orasi-chart-card,
+    .orasi-stat-caption-card,
+    .orasi-filter-context,
+    .orasi-professor-year,
+    .orasi-professor-card,
+    .orasi-doc-card,
+    .orasi-video-card {
+        border-radius: 20px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .pt90 {
+        padding-top: 62px;
+    }
+
+    .pb90 {
+        padding-bottom: 62px;
+    }
+
+    .container,
+    .container-fluid {
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+    }
+
+    .orasi-hero-shell {
+        min-height: 100svh;
+    }
+
+    .orasi-hero-title,
+    .orasi-page-banner-title,
+    .orasi-professor-meaning-title {
+        letter-spacing: 0;
+        overflow-wrap: anywhere;
+        word-break: normal;
+    }
+
+    .orasi-professor-meaning-section {
+        padding-top: 42px;
+    }
+
+    .orasi-professor-meaning-panel {
+        border-radius: 24px;
+    }
+
+    .orasi-professor-meaning-panel.padding60 {
+        padding: 34px 24px;
+    }
+
+    .orasi-professor-meaning-copy,
+    .orasi-page-banner-copy,
+    .orasi-section-page-copy {
+        font-size: 0.96rem;
+        line-height: 1.68;
+    }
+
+    .orasi-chart-head {
+        margin-bottom: 16px;
+    }
+
+    .orasi-chart-head h4 {
+        font-size: 1.05rem;
+    }
+
+    .orasi-chart-wrap,
+    .orasi-chart-wrap-lg,
+    .orasi-chart-wrap-md,
+    .orasi-chart-wrap-xl {
+        min-height: 300px;
+    }
+
+    .orasi-professor-year-toggle,
+    .orasi-filter-context,
+    .orasi-banner-footer-panel,
+    .orasi-video-thumb-topbar,
+    .orasi-doc-card-head,
+    .orasi-doc-card-footer {
+        gap: 12px;
+    }
+
+    .orasi-section-actions {
+        margin-top: 24px;
+    }
+
+    .orasi-section-link,
+    a.btn-main.orasi-professor-meaning-button {
+        width: 100%;
+        min-height: 48px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    h1,
+    h2,
+    h3,
+    .orasi-page-banner-title,
+    .orasi-hero-title,
+    .orasi-professor-meaning-title {
+        text-wrap: balance;
+    }
+
+    header.header-mobile .orasi-brand-logos {
+        max-width: calc(100vw - 92px);
+    }
+
+    .orasi-brand-logo-item img {
+        max-width: 52px;
+    }
+
+    .orasi-hero-counter,
+    .orasi-chart-card,
+    .orasi-stat-kpi,
+    .orasi-professor-meaning-panel.padding60,
+    .orasi-filter-context {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .orasi-professor-meaning-panel.padding60 {
+        padding-top: 30px;
+        padding-bottom: 32px;
+    }
+
+    .orasi-chart-wrap,
+    .orasi-chart-wrap-lg,
+    .orasi-chart-wrap-md,
+    .orasi-chart-wrap-xl {
+        min-height: 280px;
+    }
+
+    .orasi-stat-caption-grid,
+    .orasi-stat-gender-grid,
+    .orasi-section-page-metrics {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+@media (max-width: 430px) {
+    .container,
+    .container-fluid {
+        padding-left: max(14px, env(safe-area-inset-left));
+        padding-right: max(14px, env(safe-area-inset-right));
+    }
+
+    .orasi-page-banner-shell {
+        padding-top: calc(var(--orasi-header-height, 58px) + 40px);
+        padding-bottom: 44px;
+    }
+
+    .orasi-hero-title {
+        font-size: clamp(1.85rem, 9.5vw, 2.55rem);
+    }
+
+    .orasi-page-banner-title,
+    .orasi-professor-meaning-title {
+        font-size: clamp(1.75rem, 8.2vw, 2.35rem);
+    }
+
+    .orasi-professor-meaning-copy,
+    .orasi-page-banner-copy,
+    .orasi-section-page-copy {
+        font-size: 0.92rem;
+    }
+
+    .orasi-chart-wrap,
+    .orasi-chart-wrap-lg,
+    .orasi-chart-wrap-md,
+    .orasi-chart-wrap-xl {
+        min-height: 260px;
+    }
+}
+
+@media (max-width: 360px) {
+    .orasi-brand-logo-item img {
+        max-width: 44px;
+    }
+
+    .orasi-professor-meaning-panel.padding60,
+    .orasi-chart-card,
+    .orasi-hero-counter {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}

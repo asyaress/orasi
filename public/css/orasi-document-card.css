@@ -1,0 +1,278 @@
+.orasi-doc-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: #f7f8fb;
+    color: #18213a;
+    transition: all 0.25s ease;
+}
+
+.orasi-doc-link:hover {
+    background: rgba(var(--secondary-color-rgb), 0.12);
+    color: #18213a;
+}
+
+.orasi-doc-card {
+    overflow: hidden;
+    border-radius: 26px;
+    background: #fff;
+    border: 1px solid rgba(31, 41, 55, 0.08);
+    box-shadow: 0 18px 60px rgba(31, 41, 55, 0.08);
+    height: 100%;
+}
+
+.orasi-doc-card-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 14px;
+    padding-bottom: 18px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid rgba(31, 41, 55, 0.08);
+}
+
+.orasi-doc-card-title {
+    margin: 0 0 6px;
+    color: #18213a;
+    font-size: 1.3rem;
+    line-height: 1.16;
+}
+
+.orasi-doc-card-meta {
+    color: #667085;
+    font-size: 0.95rem;
+    line-height: 1.55;
+}
+
+.orasi-doc-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.orasi-detail-doc-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.orasi-archive-prof-preview-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    align-items: start;
+}
+
+.orasi-archive-prof-preview-slot {
+    min-width: 0;
+}
+
+.orasi-archive-prof-doc {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.orasi-archive-prof-doc-head {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.orasi-archive-prof-doc-name {
+    margin: 0;
+    color: #18213a;
+    font-size: 0.98rem;
+    font-weight: 800;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+.orasi-archive-prof-doc-meta {
+    margin: 0;
+    color: #667085;
+    font-size: 0.84rem;
+    line-height: 1.45;
+}
+
+.orasi-archive-prof-preview-row .orasi-doc-preview,
+.orasi-archive-prof-preview-slot .orasi-doc-preview {
+    width: 100%;
+    min-width: 0;
+}
+
+.orasi-detail-doc-block + .orasi-detail-doc-block {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(31, 41, 55, 0.08);
+}
+
+.orasi-detail-doc-block-title {
+    margin: 0 0 14px;
+    color: #18213a;
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.orasi-detail-doc-block .orasi-doc-preview {
+    max-width: 320px;
+}
+
+.orasi-document-slider {
+    position: relative;
+    overflow: hidden;
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.orasi-document-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translate3d(0, 26px, 0) scale(0.985);
+    transition:
+        opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0s linear 0.8s;
+}
+
+.orasi-document-slide.is-active {
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translate3d(0, 0, 0) scale(1);
+    transition-delay: 0s, 0s, 0s;
+    z-index: 2;
+}
+
+.orasi-document-slide.is-leaving {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: visible;
+    pointer-events: none;
+    transform: translate3d(0, -18px, 0) scale(1.012);
+    z-index: 1;
+}
+
+.orasi-document-slide-meta {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 22px;
+}
+
+.orasi-document-slide-year {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid rgba(31, 41, 55, 0.08);
+    color: #18213a;
+    font-size: 1.1rem;
+    font-weight: 800;
+    line-height: 1;
+    box-shadow: 0 12px 28px rgba(31, 41, 55, 0.06);
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+}
+
+.orasi-document-slide.is-active .orasi-document-slide-year {
+    animation: orasiYearReveal 0.95s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.orasi-document-slide .orasi-doc-preview {
+    opacity: 0;
+    transform: translate3d(0, 34px, 0) scale(0.97);
+}
+
+.orasi-document-slide .row {
+    --bs-gutter-x: 1rem;
+    flex-wrap: nowrap;
+}
+
+.orasi-document-slide .row > [class*="col-"] {
+    flex: 1 1 0;
+    width: 25%;
+    max-width: none;
+}
+
+.orasi-doc-preview {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 2 / 3;
+    border-radius: 14px;
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 14px 32px rgba(12, 45, 90, 0.14);
+    background: #faf8f3;
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+    color: inherit;
+    text-decoration: none;
+}
+
+.orasi-doc-preview:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(12, 45, 90, 0.18);
+    color: inherit;
+}
+
+.orasi-doc-cover-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.orasi-document-slide.is-active .orasi-doc-preview {
+    animation: orasiProfessorCardIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.orasi-document-slide.is-active .row > :nth-child(1) .orasi-doc-preview {
+    animation-delay: 0.06s;
+}
+
+.orasi-document-slide.is-active .row > :nth-child(2) .orasi-doc-preview {
+    animation-delay: 0.16s;
+}
+
+.orasi-document-slide.is-active .row > :nth-child(3) .orasi-doc-preview {
+    animation-delay: 0.26s;
+}
+
+.orasi-document-slide.is-active .row > :nth-child(4) .orasi-doc-preview {
+    animation-delay: 0.36s;
+}
+
+@media (max-width: 1199.98px) {
+    .orasi-document-slide .row {
+        flex-wrap: wrap;
+    }
+
+    .orasi-document-slide .row > [class*="col-"] {
+        width: 50%;
+        flex: 0 0 auto;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .orasi-doc-preview-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .orasi-document-slide .row > [class*="col-"] {
+        width: 100%;
+    }
+}
