@@ -92,9 +92,5 @@
             align-items: center;
             max-width: 100%;
         }
-
-        html.orasi-booting #wrapper > *:not(#de-loader) {
-            visibility: hidden;
-        }
     </style>
 </head>

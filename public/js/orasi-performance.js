@@ -297,17 +297,30 @@
 
     function dismissPreloader() {
         var loader = document.getElementById('de-loader');
+        var root = document.documentElement;
 
         if (!loader || loader.classList.contains('is-done')) {
             return;
         }
 
-        loader.classList.add('is-done');
-        document.documentElement.classList.remove('orasi-booting');
+        var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var revealDelay = reducedMotion ? 80 : 460;
+        var cleanupDelay = reducedMotion ? 120 : 760;
 
         window.setTimeout(function () {
-            loader.style.display = 'none';
-        }, 320);
+            requestAnimationFrame(function () {
+                loader.classList.add('is-done');
+                root.classList.add('orasi-revealed');
+
+                window.setTimeout(function () {
+                    if (loader.parentNode) {
+                        loader.parentNode.removeChild(loader);
+                    }
+
+                    root.classList.remove('orasi-booting', 'orasi-revealed');
+                }, cleanupDelay);
+            });
+        }, revealDelay);
     }
 
     whenReady(function () {

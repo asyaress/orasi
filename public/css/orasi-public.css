@@ -470,6 +470,20 @@ body.page-home #statistik {
     contain-intrinsic-size: auto 640px;
 }
 
+html.orasi-booting #wrapper > *:not(#de-loader) {
+    opacity: 0;
+    transform: translateY(14px);
+    will-change: opacity, transform;
+}
+
+html.orasi-booting.orasi-revealed #wrapper > *:not(#de-loader) {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+        opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.72s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 #de-loader.orasi-preloader-lite {
     position: fixed;
     inset: 0;
@@ -477,16 +491,24 @@ body.page-home #statistik {
     display: flex;
     align-items: flex-start;
     justify-content: stretch;
-    background: rgba(15, 19, 34, 0.18);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
+    background: rgba(15, 19, 34, 0.22);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
     pointer-events: none;
-    transition: opacity 0.28s ease, visibility 0.28s ease;
+    opacity: 1;
+    visibility: visible;
+    transition:
+        opacity 0.58s ease,
+        visibility 0.58s ease,
+        backdrop-filter 0.58s ease,
+        -webkit-backdrop-filter 0.58s ease;
 }
 
 #de-loader.orasi-preloader-lite.is-done {
     opacity: 0;
     visibility: hidden;
+    backdrop-filter: blur(0);
+    -webkit-backdrop-filter: blur(0);
 }
 
 #de-loader.orasi-preloader-lite .lds-roller {
@@ -515,5 +537,28 @@ body.page-home #statistik {
 
     100% {
         transform: translateX(320%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html.orasi-booting #wrapper > *:not(#de-loader) {
+        opacity: 1;
+        transform: none;
+    }
+
+    html.orasi-booting.orasi-revealed #wrapper > *:not(#de-loader) {
+        transition: none;
+        transform: none;
+    }
+
+    #de-loader.orasi-preloader-lite,
+    #de-loader.orasi-preloader-lite.is-done {
+        transition: none;
+    }
+
+    .orasi-preloader-lite__bar {
+        animation: none;
+        transform: none;
+        width: 100%;
     }
 }
