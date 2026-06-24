@@ -25,8 +25,11 @@ class SyncPublicHtmlCommand extends Command
 
         $publicHtml = $this->resolvePublicHtmlDirectory($appRoot);
 
+        $this->ensureStorageIsReady($appRoot);
+
         $source = public_path();
         $copied = $this->mirrorPublicDirectory($source, $publicHtml);
+        $copied += $this->copyHiddenPublicFiles($source, $publicHtml);
         $this->writeSharedHostingIndex($appRoot, $publicHtml);
         $this->linkPublicStorage($appRoot, $publicHtml);
 
@@ -114,7 +117,7 @@ class SyncPublicHtmlCommand extends Command
         }
 
         $files = File::exists($source)
-            ? collect(File::allFiles($source))
+            ? collect(File::allFiles($source, true))
             : collect();
 
         foreach ($files as $file) {
@@ -133,6 +136,46 @@ class SyncPublicHtmlCommand extends Command
         }
 
         return $copied;
+    }
+
+    private function copyHiddenPublicFiles(string $source, string $target): int
+    {
+        $copied = 0;
+        $hiddenFiles = ['.htaccess'];
+
+        foreach ($hiddenFiles as $filename) {
+            $from = $source.DIRECTORY_SEPARATOR.$filename;
+
+            if (! is_file($from)) {
+                continue;
+            }
+
+            File::copy($from, $target.DIRECTORY_SEPARATOR.$filename);
+            $copied++;
+        }
+
+        return $copied;
+    }
+
+    private function ensureStorageIsReady(string $appRoot): void
+    {
+        $directories = [
+            'storage/logs',
+            'storage/framework/cache',
+            'storage/framework/sessions',
+            'storage/framework/views',
+            'storage/app/public',
+            'bootstrap/cache',
+        ];
+
+        foreach ($directories as $directory) {
+            $path = $appRoot.DIRECTORY_SEPARATOR.str_replace('/', DIRECTORY_SEPARATOR, $directory);
+            File::ensureDirectoryExists($path);
+
+            if (is_dir($path)) {
+                @chmod($path, 0775);
+            }
+        }
     }
 
     private function writeSharedHostingIndex(string $appRoot, string $publicHtml): void
