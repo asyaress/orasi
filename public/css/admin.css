@@ -198,6 +198,7 @@ body.admin-body {
 .admin-brand img {
   width: 40px;
   height: 40px;
+  object-fit: contain;
   border-radius: var(--admin-radius-sm);
 }
 

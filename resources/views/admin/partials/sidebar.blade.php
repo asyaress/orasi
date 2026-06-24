@@ -5,7 +5,7 @@
     </div>
     <div class="offcanvas-body p-3 p-lg-4">
         <div class="admin-brand mb-4">
-            <img src="{{ asset('images/icon.png') }}" alt="Unmul">
+            <img src="{{ asset('logo/unmul-20260408145731-e033c2.png') }}" alt="Universitas Mulawarman">
             <div class="lh-sm">
                 <div class="fw-bold">Admin Orasi</div>
                 <div class="text-muted small">Universitas Mulawarman</div>
