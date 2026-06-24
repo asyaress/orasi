@@ -54,8 +54,47 @@
             background: transparent;
         }
 
-        body.page-home #de-loader {
-            display: none !important;
+        /* Cegah logo membesar sebelum CSS header selesai dimuat */
+        .orasi-brand-logos {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 100%;
+        }
+
+        .orasi-brand-logo-item {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 42px;
+            flex: 0 0 auto;
+        }
+
+        .orasi-brand-logo-item img {
+            display: block;
+            max-height: 42px;
+            max-width: 98px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+
+        #logo {
+            display: flex;
+            align-items: center;
+            height: 78px;
+            max-width: min(100%, 620px);
+            overflow: hidden;
+        }
+
+        #logo a {
+            display: inline-flex;
+            align-items: center;
+            max-width: 100%;
+        }
+
+        html.orasi-booting #wrapper > *:not(#de-loader) {
+            visibility: hidden;
         }
     </style>
 </head>

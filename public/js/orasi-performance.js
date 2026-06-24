@@ -295,12 +295,23 @@
         }, '320px 0px');
     }
 
-    whenReady(function () {
+    function dismissPreloader() {
         var loader = document.getElementById('de-loader');
 
-        if (loader) {
-            loader.style.display = 'none';
+        if (!loader || loader.classList.contains('is-done')) {
+            return;
         }
+
+        loader.classList.add('is-done');
+        document.documentElement.classList.remove('orasi-booting');
+
+        window.setTimeout(function () {
+            loader.style.display = 'none';
+        }, 320);
+    }
+
+    whenReady(function () {
+        dismissPreloader();
 
         initLazyYoutube();
         initLazyBackgrounds();

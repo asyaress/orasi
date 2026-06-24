@@ -470,6 +470,50 @@ body.page-home #statistik {
     contain-intrinsic-size: auto 640px;
 }
 
-#de-loader {
+#de-loader.orasi-preloader-lite {
+    position: fixed;
+    inset: 0;
+    z-index: 20000;
+    display: flex;
+    align-items: flex-start;
+    justify-content: stretch;
+    background: rgba(15, 19, 34, 0.18);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    pointer-events: none;
+    transition: opacity 0.28s ease, visibility 0.28s ease;
+}
+
+#de-loader.orasi-preloader-lite.is-done {
+    opacity: 0;
+    visibility: hidden;
+}
+
+#de-loader.orasi-preloader-lite .lds-roller {
     display: none !important;
+}
+
+.orasi-preloader-lite__track {
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.22);
+    overflow: hidden;
+}
+
+.orasi-preloader-lite__bar {
+    width: 38%;
+    height: 100%;
+    background: linear-gradient(90deg, #efb12c 0%, #f6c85c 45%, #2f8cf6 100%);
+    transform: translateX(-120%);
+    animation: orasi-preloader-slide 0.95s ease-in-out infinite;
+}
+
+@keyframes orasi-preloader-slide {
+    0% {
+        transform: translateX(-120%);
+    }
+
+    100% {
+        transform: translateX(320%);
+    }
 }

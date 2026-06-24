@@ -14,7 +14,7 @@
 <span class="{{ $wrapperClass }}">
     @foreach ($brandLogos as $logo)
         <span class="{{ $itemClass }}">
-            <img src="{{ asset('logo/' . $logo['file']) }}" alt="{{ $logo['alt'] }}">
+            <img src="{{ asset('logo/' . $logo['file']) }}" alt="{{ $logo['alt'] }}" width="98" height="42" decoding="async">
         </span>
     @endforeach
 </span>
