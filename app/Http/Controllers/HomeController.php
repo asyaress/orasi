@@ -68,9 +68,8 @@ class HomeController extends Controller
                 ->whereHas('orasiIlmiah', fn ($query) => $query->whereIn('status', ['published', 'archived']))
                 ->where('id', '!=', $guruBesar->id)
                 ->get()
-                ->filter(fn (GuruBesar $item) => $item->archiveYear() === $guruBesar->archiveYear())
-                ->sortBy('nama')
-                ->values();
+                ->filter(fn (GuruBesar $item) => $item->archiveYear() === $guruBesar->archiveYear());
+            $relatedByYear = GuruBesar::sortByTmtAscending($relatedByYear);
         }
 
         return view('pages.guru-besar-show', [
@@ -336,8 +335,7 @@ class HomeController extends Controller
             )
             ->select('guru_besars.*')
             ->orderByDesc('orasi_ilmiahs.tahun')
-            ->orderByDesc('orasi_ilmiahs.tanggal_pelaksanaan')
-            ->orderBy('guru_besars.nama')
+            ->orderByTmtAscending()
             ->when(! $fullLists, fn ($query) => $query->limit(8))
             ->get();
 
@@ -349,7 +347,7 @@ class HomeController extends Controller
             ->where('guru_besars.youtube_url', '!=', '')
             ->select('guru_besars.*')
             ->orderByDesc('orasi_ilmiahs.tahun')
-            ->orderByDesc('orasi_ilmiahs.tanggal_pelaksanaan')
+            ->orderByTmtAscending()
             ->when(! $fullLists, fn ($query) => $query->limit(8))
             ->get();
 
@@ -360,7 +358,7 @@ class HomeController extends Controller
         $orasiHighlights = OrasiIlmiah::query()
             ->with([
                 'guruBesars' => function ($query) {
-                    $query->orderBy('nama');
+                    $query->orderByTmtAscending();
                 },
             ])
             ->withCount('guruBesars')
@@ -386,7 +384,7 @@ class HomeController extends Controller
             })
             ->select('guru_besars.*')
             ->orderByDesc('orasi_ilmiahs.tahun')
-            ->orderBy('guru_besars.nama')
+            ->orderByTmtAscending()
             ->get();
 
         if (! $fullLists) {

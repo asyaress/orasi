@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class GuruBesar extends Model
@@ -81,6 +82,28 @@ class GuruBesar extends Model
     public function scopeUntukOrasi(Builder $query, int $orasiIlmiahId): Builder
     {
         return $query->where('orasi_ilmiah_id', $orasiIlmiahId);
+    }
+
+    public function scopeOrderByTmtAscending(Builder $query, string $table = 'guru_besars'): Builder
+    {
+        return $query
+            ->orderByRaw("CASE WHEN {$table}.tmt IS NULL THEN 1 ELSE 0 END")
+            ->orderBy("{$table}.tmt")
+            ->orderBy("{$table}.nama");
+    }
+
+    /**
+     * @param  Collection<int, self>  $gurus
+     * @return Collection<int, self>
+     */
+    public static function sortByTmtAscending(Collection $gurus): Collection
+    {
+        return $gurus
+            ->sortBy(fn (self $guru) => [
+                $guru->tmt?->format('Y-m-d') ?? '9999-12-31',
+                Str::lower($guru->nama),
+            ])
+            ->values();
     }
 
     public function isBelumDitugaskan(): bool

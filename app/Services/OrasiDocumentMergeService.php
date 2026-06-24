@@ -145,7 +145,8 @@ class OrasiDocumentMergeService
                     ->orWhereNotNull('guru_besars.ppt_path');
             })
             ->select('guru_besars.*')
-            ->orderBy('guru_besars.nama')
+            ->orderByDesc('orasi_ilmiahs.tahun')
+            ->orderByTmtAscending()
             ->get();
     }
 
