@@ -1,0 +1,54 @@
+[
+    {
+        "id": 1,
+        "judul": "Orasi Ilmiah 27 September 2023",
+        "tahun": 2023,
+        "tanggal_pelaksanaan": "2023-09-27",
+        "jenis": "Luring",
+        "pendaftaran_mulai": "2023-09-26",
+        "pendaftaran_selesai": "2023-09-27",
+        "status": "archived",
+        "banner_path": null,
+        "created_at": "2025-02-26 10:55:15",
+        "updated_at": "2025-02-26 10:55:15"
+    },
+    {
+        "id": 2,
+        "judul": "Orasi Ilmiah 27 September 2024",
+        "tahun": 2024,
+        "tanggal_pelaksanaan": "2024-09-27",
+        "jenis": "Luring",
+        "pendaftaran_mulai": "2024-09-26",
+        "pendaftaran_selesai": "2024-09-27",
+        "status": "archived",
+        "banner_path": null,
+        "created_at": "2025-02-26 10:55:15",
+        "updated_at": "2025-02-26 10:55:15"
+    },
+    {
+        "id": 3,
+        "judul": "Orasi Ilmiah 27 September 2025",
+        "tahun": 2025,
+        "tanggal_pelaksanaan": "2025-09-27",
+        "jenis": "Luring",
+        "pendaftaran_mulai": "2025-04-26",
+        "pendaftaran_selesai": "2025-09-27",
+        "status": "published",
+        "banner_path": null,
+        "created_at": "2025-02-26 10:55:15",
+        "updated_at": "2025-02-26 10:55:15"
+    },
+    {
+        "id": 5,
+        "judul": "Orasi Ilmiah 27 September 2026",
+        "tahun": 2026,
+        "tanggal_pelaksanaan": "2026-09-27",
+        "jenis": "Luring",
+        "pendaftaran_mulai": "2026-09-27",
+        "pendaftaran_selesai": "2026-09-27",
+        "status": "draft",
+        "banner_path": null,
+        "created_at": "2026-06-24 07:53:03",
+        "updated_at": "2026-06-24 08:02:20"
+    }
+]

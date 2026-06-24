@@ -1,0 +1,119 @@
+[
+    {
+        "id": 1,
+        "kode": "7",
+        "nama": "Fakultas Teknik",
+        "slug": "fakultas-teknik",
+        "is_active": 1,
+        "created_at": "2026-05-28 14:53:36",
+        "updated_at": "2026-06-02 10:52:58"
+    },
+    {
+        "id": 2,
+        "kode": "5",
+        "nama": "Fakultas Keguruan Dan Ilmu Pendidikan",
+        "slug": "fakultas-keguruan-dan-ilmu-pendidikan",
+        "is_active": 1,
+        "created_at": "2026-05-28 14:53:37",
+        "updated_at": "2026-06-02 10:52:58"
+    },
+    {
+        "id": 3,
+        "kode": "8",
+        "nama": "Fakultas Matematika Dan Ilmu Pengetahuan Alam",
+        "slug": "fakultas-matematika-dan-ilmu-pengetahuan-alam",
+        "is_active": 1,
+        "created_at": "2026-05-28 14:53:37",
+        "updated_at": "2026-06-02 10:52:58"
+    },
+    {
+        "id": 4,
+        "kode": "11",
+        "nama": "Fakultas Hukum",
+        "slug": "fakultas-hukum",
+        "is_active": 1,
+        "created_at": "2026-05-28 14:53:37",
+        "updated_at": "2026-06-02 10:52:58"
+    },
+    {
+        "id": 5,
+        "kode": "1",
+        "nama": "Fakultas Ekonomi Dan Bisnis",
+        "slug": "fakultas-ekonomi-dan-bisnis",
+        "is_active": 1,
+        "created_at": "2026-05-28 14:53:37",
+        "updated_at": "2026-06-02 10:52:58"
+    },
+    {
+        "id": 6,
+        "kode": "4",
+        "nama": "Fakultas Kehutanan",
+        "slug": "fakultas-kehutanan",
+        "is_active": 1,
+        "created_at": "2026-06-02 10:52:58",
+        "updated_at": "2026-06-02 10:52:58"
+    },
+    {
+        "id": 7,
+        "kode": "3",
+        "nama": "Fakultas Pertanian",
+        "slug": "fakultas-pertanian",
+        "is_active": 1,
+        "created_at": "2026-06-02 10:52:58",
+        "updated_at": "2026-06-02 10:52:58"
+    },
+    {
+        "id": 8,
+        "kode": "6",
+        "nama": "Fakultas Perikanan Dan Ilmu Kelautan",
+        "slug": "fakultas-perikanan-dan-ilmu-kelautan",
+        "is_active": 1,
+        "created_at": "2026-06-02 10:52:58",
+        "updated_at": "2026-06-02 10:52:58"
+    },
+    {
+        "id": 9,
+        "kode": "13",
+        "nama": "Fakultas Farmasi",
+        "slug": "fakultas-farmasi",
+        "is_active": 1,
+        "created_at": "2026-06-02 10:52:58",
+        "updated_at": "2026-06-02 10:52:58"
+    },
+    {
+        "id": 10,
+        "kode": "2",
+        "nama": "Fakultas Ilmu Sosial Dan Ilmu Politik",
+        "slug": "fakultas-ilmu-sosial-dan-ilmu-politik",
+        "is_active": 1,
+        "created_at": "2026-06-02 10:52:58",
+        "updated_at": "2026-06-02 10:52:58"
+    },
+    {
+        "id": 11,
+        "kode": "10",
+        "nama": "Fakultas Kesehatan Masyarakat",
+        "slug": "fakultas-kesehatan-masyarakat",
+        "is_active": 1,
+        "created_at": "2026-06-02 10:52:58",
+        "updated_at": "2026-06-02 10:52:58"
+    },
+    {
+        "id": 12,
+        "kode": "9",
+        "nama": "Fakultas Kedokteran",
+        "slug": "fakultas-kedokteran",
+        "is_active": 1,
+        "created_at": "2026-06-02 10:52:58",
+        "updated_at": "2026-06-02 10:52:58"
+    },
+    {
+        "id": 13,
+        "kode": "12",
+        "nama": "Fakultas Pascasarjana",
+        "slug": "fakultas-pascasarjana",
+        "is_active": 1,
+        "created_at": "2026-06-02 10:52:58",
+        "updated_at": "2026-06-02 10:52:58"
+    }
+]

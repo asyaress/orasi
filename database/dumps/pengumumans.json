@@ -1,0 +1,50 @@
+[
+    {
+        "id": 1,
+        "judul": "Pendaftaran Orasi Guru Besar Tahun 2026 Dibuka",
+        "slug": "pendaftaran-orasi-guru-besar-2026",
+        "ringkasan": "Pendaftaran orasi ilmiah bagi guru besar Universitas Mulawarman periode 2026 telah dibuka.",
+        "konten": "<p>Seluruh guru besar yang akan mengikuti orasi ilmiah tahun 2026 diharapkan melengkapi berkas sesuai jadwal yang ditetapkan.</p>",
+        "status": "published",
+        "is_pinned": 1,
+        "published_at": "2026-05-25 14:56:42",
+        "created_at": "2026-05-28 14:53:37",
+        "updated_at": "2026-05-28 14:56:42"
+    },
+    {
+        "id": 2,
+        "judul": "Jadwal Pelaksanaan Orasi Ilmiah 2025",
+        "slug": "jadwal-orasi-ilmiah-2025",
+        "ringkasan": "Informasi jadwal pelaksanaan orasi guru besar tahun 2025.",
+        "konten": "<p>Orasi ilmiah tahun 2025 akan dilaksanakan secara luring di Auditorium UNMUL.</p>",
+        "status": "published",
+        "is_pinned": 0,
+        "published_at": "2026-03-28 14:56:42",
+        "created_at": "2026-05-28 14:53:37",
+        "updated_at": "2026-05-28 14:56:42"
+    },
+    {
+        "id": 3,
+        "judul": "Pengumuman Arsip Orasi Tahun 2023–2024",
+        "slug": "arsip-orasi-2023-2024",
+        "ringkasan": "Arsip dokumentasi orasi guru besar tahun 2023 dan 2024 telah tersedia.",
+        "konten": "<p>Dokumentasi dapat diakses melalui menu arsip pada website orasi.</p>",
+        "status": "published",
+        "is_pinned": 0,
+        "published_at": "2025-11-28 14:56:42",
+        "created_at": "2026-05-28 14:53:37",
+        "updated_at": "2026-05-28 14:56:42"
+    },
+    {
+        "id": 4,
+        "judul": "Draft: Persiapan Orasi 2027",
+        "slug": "draft-persiapan-orasi-2027",
+        "ringkasan": "Catatan internal persiapan orasi tahun 2027.",
+        "konten": "<p>Belum dipublikasikan.</p>",
+        "status": "draft",
+        "is_pinned": 0,
+        "published_at": null,
+        "created_at": "2026-05-28 14:53:37",
+        "updated_at": "2026-05-28 14:53:37"
+    }
+]

@@ -1,0 +1,15 @@
+{
+    "exported_at": "2026-06-24T08:26:48+00:00",
+    "connection": "mysql",
+    "database": "orasi",
+    "tables": {
+        "users": 1,
+        "fakultas": 13,
+        "prodis": 40,
+        "orasis": 0,
+        "orasi_ilmiahs": 4,
+        "guru_besars": 58,
+        "pengumumans": 4,
+        "two_factor_devices": 1
+    }
+}

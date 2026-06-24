@@ -1,0 +1,12 @@
+[
+    {
+        "id": 1,
+        "user_id": 1,
+        "name": "Authenticator",
+        "secret": "eyJpdiI6ImFYRVZqYUhja1dCZUNyUjdPNTBxM1E9PSIsInZhbHVlIjoiZkxVU21La2IvMzlvNTByQWF3MWJTdlFBcm1SY0M1U243Z21nTmE2NGlaND0iLCJtYWMiOiIyY2U3NTExMTgwODVjOTk0MTM1OTVjYzFlY2NmNGY4MDcxOGVlYjk0NDg2OTE5MjM1MmU5ZjQzM2M2NDIyY2NiIiwidGFnIjoiIn0=",
+        "confirmed_at": "2026-05-28 13:44:27",
+        "last_used_at": "2026-06-24 05:13:34",
+        "created_at": "2026-05-28 14:13:01",
+        "updated_at": "2026-06-24 05:13:34"
+    }
+]
