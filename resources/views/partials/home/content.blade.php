@@ -2815,14 +2815,7 @@
 
     @if ($showHero)
         <section id="beranda" class="orasi-hero text-light position-relative">
-            <div class="orasi-hero-video">
-                <iframe
-                    src="{{ $heroYoutubeEmbedUrl }}"
-                    title="Video hero Orasi Ilmiah"
-                    allow="autoplay; encrypted-media; picture-in-picture"
-                    allowfullscreen
-                    referrerpolicy="strict-origin-when-cross-origin"
-                ></iframe>
+            <div class="orasi-hero-video" data-orasi-lazy-youtube="{{ $heroYoutubeEmbedUrl }}" data-orasi-youtube-title="Video hero Orasi Ilmiah">
             </div>
             <div class="container position-relative z-2 orasi-hero-shell">
                 <div class="row align-items-center gx-5">
@@ -2878,8 +2871,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="padding60 sm-padding40 rounded-30 jarallax text-light orasi-professor-meaning-panel wow fadeInUp">
-                            <img src="{{ asset('foto-gor-27.png') }}" class="jarallax-img" alt="Guru Besar Universitas Mulawarman">
+                        <div class="padding60 sm-padding40 rounded-30 text-light orasi-professor-meaning-panel orasi-professor-meaning-panel--lazy wow fadeInUp" data-orasi-lazy-bg="{{ asset('foto-gor-27.png') }}">
                             <div class="orasi-professor-meaning-content">
                                 <div class="orasi-professor-meaning-kicker wow fadeInUp mb-3">
                                     <i class="fa-solid fa-graduation-cap"></i>
@@ -3079,7 +3071,13 @@
                                                             </div>
                                                             <div class="orasi-professor-photo-wrap{{ $useFullOverlay ? ' is-full-overlay' : '' }}">
                                                                 @if ($guru->foto_path)
-                                                                    <img src="{{ asset('storage/' . $guru->foto_path) }}" class="orasi-professor-photo{{ $useFullOverlay ? ' is-full-overlay' : '' }}" alt="{{ $guru->nama }}">
+                                                                    <img
+                                                                        src="{{ asset('storage/' . $guru->foto_path) }}"
+                                                                        class="orasi-professor-photo{{ $useFullOverlay ? ' is-full-overlay' : '' }}"
+                                                                        alt="{{ $guru->nama }}"
+                                                                        loading="lazy"
+                                                                        decoding="async"
+                                                                    >
                                                                 @else
                                                                     <div class="orasi-professor-placeholder">{{ $initials ?: 'GB' }}</div>
                                                                 @endif
@@ -3150,7 +3148,22 @@
                                                     </div>
                                                     <div class="orasi-professor-photo-wrap{{ $useFullOverlay ? ' is-full-overlay' : '' }}">
                                                         @if ($guru->foto_path)
-                                                            <img src="{{ asset('storage/' . $guru->foto_path) }}" class="orasi-professor-photo{{ $useFullOverlay ? ' is-full-overlay' : '' }}" alt="{{ $guru->nama }}">
+                                                            @php
+                                                                $photoUrl = asset('storage/' . $guru->foto_path);
+                                                                $deferProfessorPhoto = ! ($loop->parent->first && $loop->iteration <= 2);
+                                                            @endphp
+                                                            <img
+                                                                @if ($deferProfessorPhoto)
+                                                                    data-src="{{ $photoUrl }}"
+                                                                    src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E"
+                                                                    loading="lazy"
+                                                                @else
+                                                                    src="{{ $photoUrl }}"
+                                                                @endif
+                                                                class="orasi-professor-photo{{ $useFullOverlay ? ' is-full-overlay' : '' }}"
+                                                                alt="{{ $guru->nama }}"
+                                                                decoding="async"
+                                                            >
                                                         @else
                                                             <div class="orasi-professor-placeholder">{{ $initials ?: 'GB' }}</div>
                                                         @endif
@@ -3677,9 +3690,14 @@
 </div>
 
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
     <script>
-        window.addEventListener('load', function() {
+        window.initOrasiCharts = function() {
+            if (window.initOrasiCharts._initialized) {
+                return;
+            }
+
+            window.initOrasiCharts._initialized = true;
+
             const palette = ['#F6B234', '#2F8CF6', '#8B5CF6', '#10B981', '#F97316', '#EF4444', '#06B6D4', '#6366F1'];
             const chartFont = "'Inter', 'system-ui', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
             const activeFacultyChartData = @json($activeFacultyChartData);
@@ -4005,155 +4023,6 @@
 
             buildYearBarChart(yearTrendCtx, activeYearChartData.labels, activeYearChartData.data, 'Guru Besar');
             buildStackedFacultyChart(achievementFacultyCtx, excelAchievementData, 'SK');
-
-            document.querySelectorAll('[data-year-archive], #orasiProfessorArchive').forEach(function(archive) {
-                archive.addEventListener('click', function(event) {
-                    const trigger = event.target.closest('[data-year-toggle]');
-
-                    if (!trigger) {
-                        return;
-                    }
-
-                    const item = trigger.closest('[data-year-accordion]');
-
-                    if (!item) {
-                        return;
-                    }
-
-                    const shouldOpen = !item.classList.contains('is-open');
-
-                    archive.querySelectorAll('[data-year-accordion]').forEach(function(node) {
-                        node.classList.remove('is-open');
-                        const button = node.querySelector('[data-year-toggle]');
-
-                        if (button) {
-                            button.setAttribute('aria-expanded', 'false');
-                        }
-                    });
-
-                    if (shouldOpen) {
-                        item.classList.add('is-open');
-                        trigger.setAttribute('aria-expanded', 'true');
-                    }
-                });
-            });
-
-            const cycleSliders = Array.from(document.querySelectorAll('[data-cycle-slider]'));
-
-            cycleSliders.forEach(function(slider) {
-                const slideSelector = slider.dataset.slideSelector || '[data-slide]';
-                const slides = Array.from(slider.querySelectorAll(slideSelector));
-
-                if (slides.length <= 1) {
-                    return;
-                }
-
-                const autoplayMs = Number(slider.dataset.autoplayMs || 4200);
-                const transitionMs = 820;
-                let currentIndex = slides.findIndex(function(slide) {
-                    return slide.classList.contains('is-active');
-                });
-
-                if (currentIndex < 0) {
-                    currentIndex = 0;
-                }
-
-                let sliderTimer = null;
-                let transitionTimer = null;
-                let isTransitioning = false;
-
-                function setSliderHeight(slide) {
-                    if (!slide) {
-                        return;
-                    }
-
-                    const contentHeight = Array.from(slide.children).reduce(function(total, child) {
-                        const style = window.getComputedStyle(child);
-                        const marginTop = parseFloat(style.marginTop) || 0;
-                        const marginBottom = parseFloat(style.marginBottom) || 0;
-
-                        return total + child.offsetHeight + marginTop + marginBottom;
-                    }, 0);
-
-                    slider.style.minHeight = Math.ceil(contentHeight || slide.offsetHeight) + 'px';
-                }
-
-                function clearLeavingState() {
-                    slides.forEach(function(slide) {
-                        slide.classList.remove('is-leaving');
-                    });
-                }
-
-                function showSlide(index, force) {
-                    const nextIndex = (index + slides.length) % slides.length;
-
-                    if (!force && (isTransitioning || nextIndex === currentIndex)) {
-                        return;
-                    }
-
-                    const currentSlide = slides[currentIndex];
-                    const nextSlide = slides[nextIndex];
-
-                    if (!currentSlide || !nextSlide) {
-                        return;
-                    }
-
-                    window.clearTimeout(transitionTimer);
-                    isTransitioning = true;
-                    setSliderHeight(nextSlide);
-
-                    if (currentSlide !== nextSlide) {
-                        currentSlide.classList.add('is-leaving');
-                        currentSlide.classList.remove('is-active');
-                    }
-
-                    nextSlide.classList.add('is-active');
-                    currentIndex = nextIndex;
-
-                    transitionTimer = window.setTimeout(function() {
-                        clearLeavingState();
-                        setSliderHeight(slides[currentIndex]);
-                        isTransitioning = false;
-                    }, transitionMs);
-                }
-
-                function queueNextSlide() {
-                    window.clearTimeout(sliderTimer);
-
-                    sliderTimer = window.setTimeout(function advanceSlider() {
-                        showSlide(currentIndex + 1);
-                        sliderTimer = window.setTimeout(advanceSlider, autoplayMs);
-                    }, autoplayMs);
-                }
-
-                function restartSlider() {
-                    window.clearTimeout(sliderTimer);
-                    queueNextSlide();
-                }
-
-                function syncSliderHeight() {
-                    setSliderHeight(slides[currentIndex]);
-                }
-
-                document.addEventListener('visibilitychange', function() {
-                    if (document.hidden) {
-                        window.clearTimeout(sliderTimer);
-                        window.clearTimeout(transitionTimer);
-                    } else {
-                        clearLeavingState();
-                        syncSliderHeight();
-                        restartSlider();
-                    }
-                });
-
-                window.addEventListener('resize', function() {
-                    syncSliderHeight();
-                });
-
-                syncSliderHeight();
-                showSlide(currentIndex, true);
-                restartSlider();
-            });
-        });
+        };
     </script>
 @endpush

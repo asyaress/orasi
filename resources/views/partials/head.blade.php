@@ -13,7 +13,9 @@
     ================================================== -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" id="bootstrap">
     <link href="{{ asset('css/plugins.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('css/swiper.css') }}" rel="stylesheet" type="text/css">
+    @if (request()->routeIs('portal.guru-besar.show'))
+        <link href="{{ asset('css/swiper.css') }}" rel="stylesheet" type="text/css">
+    @endif
     <link href="{{ asset('css/style.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/coloring.css') }}" rel="stylesheet" type="text/css">
     <link id="colors" href="{{ asset('css/colors/scheme-01.css') }}" rel="stylesheet" type="text/css">
@@ -50,6 +52,10 @@
         body.page-home,
         body.page-home #wrapper {
             background: transparent;
+        }
+
+        body.page-home #de-loader {
+            display: none !important;
         }
     </style>
 </head>

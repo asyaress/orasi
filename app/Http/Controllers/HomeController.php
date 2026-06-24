@@ -338,6 +338,7 @@ class HomeController extends Controller
             ->orderByDesc('orasi_ilmiahs.tahun')
             ->orderByDesc('orasi_ilmiahs.tanggal_pelaksanaan')
             ->orderBy('guru_besars.nama')
+            ->when(! $fullLists, fn ($query) => $query->limit(8))
             ->get();
 
         $latestVideos = GuruBesar::query()
@@ -349,6 +350,7 @@ class HomeController extends Controller
             ->select('guru_besars.*')
             ->orderByDesc('orasi_ilmiahs.tahun')
             ->orderByDesc('orasi_ilmiahs.tanggal_pelaksanaan')
+            ->when(! $fullLists, fn ($query) => $query->limit(8))
             ->get();
 
         $latestVideos->each(function (GuruBesar $video) {
@@ -599,7 +601,9 @@ class HomeController extends Controller
             'video_year_count' => (int) $activeVideoYearChartData->count(),
         ];
 
-        $excelInsights = $this->loadExcelAchievementInsights();
+        $excelInsights = $fullLists
+            ? $this->loadExcelAchievementInsights()
+            : $this->emptyExcelAchievementInsights();
 
         $activeOrasiFilterStats = null;
 
@@ -652,6 +656,28 @@ class HomeController extends Controller
             'excelStatSummary' => $excelInsights['statSummary'],
             'activeOrasiFilter' => $activeOrasiFilter,
             'activeOrasiFilterStats' => $activeOrasiFilterStats,
+        ];
+    }
+
+    private function emptyExcelAchievementInsights(): array
+    {
+        return [
+            'achievementData' => [
+                'faculties' => [],
+                'faculty_labels' => [],
+                'series' => [],
+            ],
+            'statSummary' => [
+                'period_label' => 'SK 2019-2025',
+                'year_count' => 0,
+                'total_achievements' => 0,
+                'total_faculties' => 0,
+                'active_achievement_faculties' => 0,
+                'top_year_label' => '-',
+                'top_year_total' => 0,
+                'top_achievement_faculty_label' => '-',
+                'top_achievement_faculty_total' => 0,
+            ],
         ];
     }
 

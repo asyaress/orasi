@@ -452,3 +452,24 @@ section {
         padding-right: 16px;
     }
 }
+
+.orasi-professor-meaning-panel--lazy {
+    background-color: #18213a;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+body.page-home #tentang-guru-besar,
+body.page-home #guru-besar,
+body.page-home #daftar-orasi,
+body.page-home #video-orasi,
+body.page-home #dokumen-orasi,
+body.page-home #statistik {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 640px;
+}
+
+#de-loader {
+    display: none !important;
+}
