@@ -1,6 +1,6 @@
 @php
     $chatbotService = app(\App\Services\OrasiChatbotService::class);
-    $chatWelcome = 'Selamat datang. Perkenalkan, saya <strong>Si Ora</strong>, asisten informasi Portal Orasi Ilmiah Guru Besar Universitas Mulawarman. Saya dapat membantu menelusuri agenda, profil guru besar, statistik, video, dokumen, serta pencarian berdasarkan kata kunci.';
+    $chatWelcome = 'Selamat datang. Perkenalkan, saya <strong>Sasi</strong>, asisten informasi Portal Orasi Ilmiah Guru Besar Universitas Mulawarman. Saya dapat membantu menelusuri agenda, profil guru besar, statistik, video, dokumen, serta pencarian berdasarkan kata kunci.';
     $chatSuggestions = $chatbotService->welcomeSuggestions();
 @endphp
 
@@ -16,18 +16,18 @@
     data-welcome="{{ $chatWelcome }}"
     data-suggestions='@json($chatSuggestions)'
 >
-    <div class="orasi-chatbot__panel" data-chat-panel role="dialog" aria-label="Chat Si Ora">
+    <div class="orasi-chatbot__panel" data-chat-panel role="dialog" aria-label="Chat Sasi">
         <div class="orasi-chatbot__header">
             <img
                 class="orasi-chatbot__header-avatar"
                 data-chat-avatar
                 src="{{ asset('avatar-chat.png') }}"
-                alt="Avatar Si Ora"
+                alt="Avatar Sasi"
                 width="42"
                 height="42"
             >
             <div class="orasi-chatbot__header-text">
-                <strong>Si Ora</strong>
+                <strong>Sasi</strong>
                 <span>Asisten informasi Orasi Ilmiah Guru Besar Universitas Mulawarman</span>
             </div>
             <button type="button" class="orasi-chatbot__close" data-chat-close aria-label="Tutup chat">&times;</button>
@@ -46,19 +46,19 @@
                 data-chat-input
                 placeholder="Ketik kata kunci atau pertanyaan..."
                 maxlength="500"
-                aria-label="Pertanyaan untuk Si Ora"
+                aria-label="Pertanyaan untuk Sasi"
             >
             <button type="submit" class="orasi-chatbot__send" data-chat-send>Kirim</button>
         </form>
     </div>
 
-    <button type="button" class="orasi-chatbot__nudge" data-chat-toggle aria-label="Buka chat Si Ora">
-        <strong>Si Ora</strong>
+    <button type="button" class="orasi-chatbot__nudge" data-chat-toggle aria-label="Buka chat Sasi">
+        <strong>Sasi</strong>
         <span>Silakan klik untuk bantuan informasi.</span>
     </button>
 
-    <button type="button" class="orasi-chatbot__toggle" data-chat-toggle aria-label="Buka chat Si Ora">
-        <img data-chat-avatar src="{{ asset('avatar-chat.png') }}" alt="Buka chat Si Ora" width="64" height="64">
+    <button type="button" class="orasi-chatbot__toggle" data-chat-toggle aria-label="Buka chat Sasi">
+        <img data-chat-avatar src="{{ asset('avatar-chat.png') }}" alt="Buka chat Sasi" width="64" height="64">
     </button>
 </div>
 

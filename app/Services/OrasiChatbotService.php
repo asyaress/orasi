@@ -23,7 +23,7 @@ class OrasiChatbotService
     /** @var array<int, string> */
     private array $identityPatterns = [
         'siapa kamu', 'kamu siapa', 'anda siapa', 'siapa anda',
-        'si ora siapa', 'kamu siapa ora', 'perkenalkan kamu',
+        'sasi siapa', 'siapa sasi', 'kamu siapa sasi', 'perkenalkan kamu',
         'perkenalkan diri', 'perkenalkan dirimu', 'who are you',
         'what are you', 'namamu siapa', 'nama kamu siapa', 'kamu itu siapa',
     ];
@@ -749,7 +749,7 @@ class OrasiChatbotService
 
         if ($this->containsKeywords($query, ['unmul', 'universitas mulawarman', 'kampus'])) {
             return [
-                'message' => 'Portal ini memuat informasi Orasi Ilmiah Guru Besar Universitas Mulawarman. Saya, Si Ora, dapat membantu menelusuri agenda, profil guru besar, video, dokumen, dan statistik orasi.',
+                'message' => 'Portal ini memuat informasi Orasi Ilmiah Guru Besar Universitas Mulawarman. Saya, Sasi, dapat membantu menelusuri agenda, profil guru besar, video, dokumen, dan statistik orasi.',
                 'type' => 'about_unmul',
             ];
         }
@@ -1460,7 +1460,7 @@ class OrasiChatbotService
     private function greetingResponse(array $context): array
     {
         return [
-            'message' => 'Selamat datang. Perkenalkan, saya <strong>Si Ora</strong>, asisten informasi '.$this->portalLabel().'. Saya dapat membantu menelusuri agenda orasi, profil guru besar, statistik, video, dokumen, serta pencarian berdasarkan kata kunci.',
+            'message' => 'Selamat datang. Perkenalkan, saya <strong>Sasi</strong>, asisten informasi '.$this->portalLabel().'. Saya dapat membantu menelusuri agenda orasi, profil guru besar, statistik, video, dokumen, serta pencarian berdasarkan kata kunci.',
             'type' => 'greeting',
             'suggestions' => $this->welcomeSuggestions(),
         ];
@@ -1473,7 +1473,7 @@ class OrasiChatbotService
     private function identityResponse(array $context): array
     {
         return [
-            'message' => 'Perkenalkan, saya <strong>Si Ora</strong>, asisten informasi '.$this->portalLabel().'.<br><br>'
+            'message' => 'Perkenalkan, saya <strong>Sasi</strong>, asisten informasi '.$this->portalLabel().'.<br><br>'
                 .'Saya membantu menjawab pertanyaan seputar agenda orasi ilmiah, profil guru besar, statistik, video, dan dokumen pada portal Universitas Mulawarman.',
             'type' => 'identity',
             'suggestions' => $this->welcomeSuggestions(),

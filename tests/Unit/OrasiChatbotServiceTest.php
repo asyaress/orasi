@@ -7,22 +7,24 @@ use PHPUnit\Framework\TestCase;
 
 class OrasiChatbotServiceTest extends TestCase
 {
-    public function test_greeting_introduces_si_ora_formally(): void
+    public function test_greeting_introduces_sasi_formally(): void
     {
         $result = (new OrasiChatbotService())->reply('hello', $this->context());
 
         $this->assertSame('greeting', $result['type']);
-        $this->assertStringContainsString('Si Ora', $result['message']);
+        $this->assertStringContainsString('Sasi', $result['message']);
+        $this->assertStringNotContainsString(implode(' ', ['Si', 'Ora']), $result['message']);
         $this->assertStringContainsString('Universitas Mulawarman', $result['message']);
         $this->assertStringNotContainsString('UNMUL', $result['message']);
     }
 
-    public function test_identity_query_introduces_si_ora(): void
+    public function test_identity_query_introduces_sasi(): void
     {
         $result = (new OrasiChatbotService())->reply('perkenalkan kamu siapa', $this->context());
 
         $this->assertSame('identity', $result['type']);
-        $this->assertStringContainsString('Si Ora', $result['message']);
+        $this->assertStringContainsString('Sasi', $result['message']);
+        $this->assertStringNotContainsString(implode(' ', ['Si', 'Ora']), $result['message']);
         $this->assertStringContainsString('Universitas Mulawarman', $result['message']);
         $this->assertStringNotContainsString('UNMUL', $result['message']);
     }
