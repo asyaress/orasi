@@ -54,7 +54,7 @@
 
     <button type="button" class="orasi-chatbot__nudge" data-chat-toggle aria-label="Buka chat Sasi">
         <strong>Sasi</strong>
-        <span>Silakan klik untuk bantuan informasi.</span>
+        <span>Klik untuk bantuan informasi.</span>
     </button>
 
     <button type="button" class="orasi-chatbot__toggle" data-chat-toggle aria-label="Buka chat Sasi">
