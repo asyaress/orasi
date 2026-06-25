@@ -156,8 +156,8 @@
         }
 
         .orasi-nav-shift #mainmenu > li::before {
-            top: 0;
-            white-space: nowrap;
+            content: none !important;
+            display: none !important;
         }
 
         .orasi-nav-shift #mainmenu a {
