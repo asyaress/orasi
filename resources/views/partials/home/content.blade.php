@@ -2896,17 +2896,15 @@
     @endif
 
     @php
-    $oratorSlides = $latestOrators
+        $oratorSlides = $latestOrators
             ->groupBy(fn ($guru) => (string) ($guru->archiveYear() ?: 'Tanpa Tahun'))
             ->sortKeysDesc()
             ->flatMap(function ($gurus, $year) {
-                return $gurus->values()->chunk(4)->map(function ($chunk, $index) use ($year) {
-                    return [
-                        'year' => $year,
-                        'key' => $year . '-' . $index,
-                        'items' => $chunk,
-                    ];
-                });
+                return $gurus->values()->chunk(4)->map(fn ($chunk, $index) => [
+                    'year' => $year,
+                    'key' => $year . '-orator-' . $index,
+                    'items' => $chunk,
+                ]);
             })
             ->values();
 
@@ -2914,13 +2912,11 @@
             ->groupBy(fn ($video) => (string) ($video->archiveYear() ?: 'Tanpa Tahun'))
             ->sortKeysDesc()
             ->flatMap(function ($videos, $year) {
-                return $videos->values()->chunk(4)->map(function ($chunk, $index) use ($year) {
-                    return [
-                        'year' => $year,
-                        'key' => $year . '-video-' . $index,
-                        'items' => $chunk,
-                    ];
-                });
+                return $videos->values()->chunk(4)->map(fn ($chunk, $index) => [
+                    'year' => $year,
+                    'key' => $year . '-video-' . $index,
+                    'items' => $chunk,
+                ]);
             })
             ->values();
 
@@ -2984,13 +2980,11 @@
             ->groupBy('year')
             ->sortKeysDesc()
             ->flatMap(function ($cards, $year) {
-                return $cards->values()->chunk(4)->map(function ($chunk, $index) use ($year) {
-                    return [
-                        'year' => $year,
-                        'key' => $year . '-document-' . $index,
-                        'items' => $chunk,
-                    ];
-                });
+                return $cards->values()->chunk(4)->map(fn ($chunk, $index) => [
+                    'year' => $year,
+                    'key' => $year . '-document-' . $index,
+                    'items' => $chunk,
+                ]);
             })
             ->values();
 
@@ -3126,7 +3120,7 @@
                             </div>
 
                             <div class="row g-4">
-                                @foreach ($slide['items'] as $guru)
+                                @forelse ($slide['items'] as $guru)
                                     @php
                                         $cleanName = preg_replace('/\b(prof|dr|ir|mt|mpd|msi|mh|mp|phd|sh|st)\b\.?/i', ' ', $guru->nama);
                                         $initials = collect(preg_split('/\s+/', preg_replace('/[^A-Za-z ]/', ' ', $cleanName) ?: ''))
@@ -3179,7 +3173,9 @@
                                             </div>
                                         </a>
                                     </div>
-                                @endforeach
+                                @empty
+                                    <div class="col-12"><div class="orasi-empty">Belum ada guru besar untuk tahun {{ $slide['year'] }}.</div></div>
+                                @endforelse
                             </div>
                         </div>
                     @empty
@@ -3306,7 +3302,7 @@
                             </div>
 
                             <div class="row g-4">
-                                @foreach ($slide['items'] as $video)
+                                @forelse ($slide['items'] as $video)
                                     <div class="col-xl-3 col-md-6">
                                         <div class="orasi-video-card">
                                             <a href="{{ $video->youtube_url }}" target="_blank" rel="noopener noreferrer" class="d-block" aria-label="Buka video {{ $video->nama }}">
@@ -3335,7 +3331,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
+                                @empty
+                                    <div class="col-12"><div class="orasi-empty">Belum ada video orasi untuk tahun {{ $slide['year'] }}.</div></div>
+                                @endforelse
                             </div>
                         </div>
                     @empty
@@ -3438,11 +3436,13 @@
                                 </div>
 
                                 <div class="row g-2 g-lg-3">
-                                    @foreach ($slide['items'] as $document)
+                                    @forelse ($slide['items'] as $document)
                                         <div class="col-xl-3 col-lg-3 col-md-6">
                                             @include('partials.home.document-preview-card', ['document' => $document])
                                         </div>
-                                    @endforeach
+                                    @empty
+                                        <div class="col-12"><div class="orasi-empty">Belum ada dokumen orasi untuk tahun {{ $slide['year'] }}.</div></div>
+                                    @endforelse
                                 </div>
                             </div>
                         @endforeach
@@ -3686,6 +3686,36 @@
             @endif
         </div>
     </section>
+    @endif
+
+    @if ($isHomePage && $latestPengumuman)
+        <section id="pengumuman-home" class="orasi-home-pengumuman-section pb90">
+            <div class="container">
+                <div class="row justify-content-center text-center mb-4">
+                    <div class="col-lg-10 col-xl-8">
+                        <h2 class="wow fadeInUp mb-0" data-wow-delay=".1s">Pengumuman</h2>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-xl-7 col-lg-8 col-md-10">
+                        <article class="pengumuman-card pengumuman-card--featured h-100 wow fadeInUp">
+                            <a class="pengumuman-card-media" href="{{ route('portal.pengumuman.show', $latestPengumuman) }}" aria-label="Baca {{ $latestPengumuman->judul }}">
+                                @if ($latestPengumuman->cover_url)
+                                    <img src="{{ $latestPengumuman->cover_url }}" alt="Cover {{ $latestPengumuman->judul }}" loading="lazy">
+                                @else
+                                    <span class="pengumuman-cover-placeholder"><i class="fa fa-bullhorn"></i></span>
+                                @endif
+                            </a>
+                            <div class="pengumuman-card-body">
+                                <div class="pengumuman-date"><i class="fa fa-calendar-o"></i> {{ $latestPengumuman->published_label }}</div>
+                                <h2><a href="{{ route('portal.pengumuman.show', $latestPengumuman) }}">{{ $latestPengumuman->judul }}</a></h2>
+                                <a class="pengumuman-read-more" href="{{ route('portal.pengumuman.show', $latestPengumuman) }}">Baca selengkapnya <i class="fa fa-arrow-right"></i></a>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
     @endif
 </div>
 

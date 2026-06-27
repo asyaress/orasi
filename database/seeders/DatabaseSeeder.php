@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
 
         $seeders[] = GuruBesarMediaSeeder::class;
         $seeders[] = BackfillGuruBesarJenisKelaminSeeder::class;
+        $seeders[] = PengumumanHaviluddinSeeder::class;
 
         $this->call($seeders);
     }
