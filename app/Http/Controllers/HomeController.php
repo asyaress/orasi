@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\GuruBesar;
 use App\Models\OrasiIlmiah;
+use App\Models\Pengumuman;
 use App\Services\OrasiChatbotService;
 use App\Services\OrasiDocumentMergeService;
 use Illuminate\Contracts\View\View;
@@ -11,8 +12,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use ZipArchive;
@@ -105,7 +106,7 @@ class HomeController extends Controller
             abort(500, 'Tidak dapat menyiapkan file unduhan.');
         }
 
-        $zip = new ZipArchive();
+        $zip = new ZipArchive;
 
         if ($zip->open($zipFile, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
             @unlink($zipFile);
@@ -171,7 +172,7 @@ class HomeController extends Controller
                 ->with('warning', $exception->getMessage());
         }
 
-        $downloadName = 'dokumen-orasi-' . Str::slug($yearLabel) . '-gabungan-' . $kind . '.pdf';
+        $downloadName = 'dokumen-orasi-'.Str::slug($yearLabel).'-gabungan-'.$kind.'.pdf';
 
         app()->terminating(function () use ($merged): void {
             foreach ($merged['cleanup'] as $tempFile) {
@@ -261,7 +262,7 @@ class HomeController extends Controller
                     return [$absolutePath, "{$baseName}.{$extension}"];
                 }
 
-                $jpgPath = $tempFile . '.jpg';
+                $jpgPath = $tempFile.'.jpg';
                 @rename($tempFile, $jpgPath);
                 if (imagejpeg($image, $jpgPath, 92) !== true) {
                     @unlink($jpgPath);
@@ -336,7 +337,6 @@ class HomeController extends Controller
             ->select('guru_besars.*')
             ->orderByDesc('orasi_ilmiahs.tahun')
             ->orderByTmtAscending()
-            ->when(! $fullLists, fn ($query) => $query->limit(8))
             ->get();
 
         $latestVideos = GuruBesar::query()
@@ -348,7 +348,6 @@ class HomeController extends Controller
             ->select('guru_besars.*')
             ->orderByDesc('orasi_ilmiahs.tahun')
             ->orderByTmtAscending()
-            ->when(! $fullLists, fn ($query) => $query->limit(8))
             ->get();
 
         $latestVideos->each(function (GuruBesar $video) {
@@ -386,10 +385,6 @@ class HomeController extends Controller
             ->orderByDesc('orasi_ilmiahs.tahun')
             ->orderByTmtAscending()
             ->get();
-
-        if (! $fullLists) {
-            $documentItems = $documentItems->take(4)->values();
-        }
 
         $archiveYears = OrasiIlmiah::query()
             ->whereIn('status', $publicStatuses)
@@ -449,10 +444,10 @@ class HomeController extends Controller
                 'video_orasi' => (clone $publicGuruQuery)->whereNotNull('youtube_url')->where('youtube_url', '!=', '')->count(),
                 'dokumen_orasi' => (clone $publicGuruQuery)
                     ->where(function ($query) {
-                    $query->whereNotNull('file_orasi_path')
-                        ->orWhereNotNull('ppt_path')
-                        ->orWhereNotNull('piagam_path')
-                        ->orWhereNotNull('sertifikat_path');
+                        $query->whereNotNull('file_orasi_path')
+                            ->orWhereNotNull('ppt_path')
+                            ->orWhereNotNull('piagam_path')
+                            ->orWhereNotNull('sertifikat_path');
                     })
                     ->count(),
                 'fakultas_terlibat' => (clone $publicGuruQuery)
@@ -605,6 +600,11 @@ class HomeController extends Controller
 
         $activeOrasiFilterStats = null;
 
+        $latestPengumuman = Pengumuman::query()
+            ->published()
+            ->publicOrder()
+            ->first();
+
         if ($activeOrasiFilter) {
             $activeOrasiFilterStats = [
                 'guru_besar' => $latestOrators->count(),
@@ -620,6 +620,7 @@ class HomeController extends Controller
         return [
             'featuredGuru' => $featuredGuru,
             'featuredOrasi' => $featuredOrasi,
+            'latestPengumuman' => $latestPengumuman,
             'heroYoutubeEmbedUrl' => $this->youtubeEmbedUrl($heroYoutubeUrl, true),
             'heroVideoSource' => $this->resolveHeroVideoSource(),
             'heroBackground' => $this->resolveHeroBackground($featuredOrasi, $featuredGuru),
@@ -724,7 +725,7 @@ class HomeController extends Controller
         ]);
 
         try {
-            $excelPath = dirname(base_path()) . DIRECTORY_SEPARATOR . 'GB 2021-2025.xlsx';
+            $excelPath = dirname(base_path()).DIRECTORY_SEPARATOR.'GB 2021-2025.xlsx';
             $rows = $this->readExcelSheetRows($excelPath, 'REKAP');
 
             if ($rows !== []) {
@@ -831,7 +832,7 @@ class HomeController extends Controller
             return [];
         }
 
-        $zip = new ZipArchive();
+        $zip = new ZipArchive;
 
         if ($zip->open($path) !== true) {
             return [];
@@ -957,7 +958,7 @@ class HomeController extends Controller
                 return null;
             }
 
-            return Str::startsWith($target, 'xl/') ? $target : 'xl/' . $target;
+            return Str::startsWith($target, 'xl/') ? $target : 'xl/'.$target;
         }
 
         return null;
@@ -985,11 +986,11 @@ class HomeController extends Controller
     private function resolveHeroBackground(?OrasiIlmiah $orasi, ?GuruBesar $guru): string
     {
         if ($orasi?->banner_path) {
-            return asset('storage/' . $orasi->banner_path);
+            return asset('storage/'.$orasi->banner_path);
         }
 
         if ($guru?->foto_path) {
-            return asset('storage/' . $guru->foto_path);
+            return asset('storage/'.$guru->foto_path);
         }
 
         return asset('images/background/1.webp');

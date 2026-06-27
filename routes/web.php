@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminOrasiController;
 use App\Http\Controllers\Admin\AdminPengumumanController;
@@ -30,6 +31,8 @@ Route::get('/dokumen-orasi/tahun/{year}/unduh-gabungan/{type}', [HomeController:
     ->where('type', 'naskah|presentasi')
     ->name('portal.dokumen-orasi.merge');
 Route::get('/statistik', [HomeController::class, 'statistik'])->name('portal.statistik');
+Route::get('/pengumuman', [PengumumanController::class, 'index'])->name('portal.pengumuman.index');
+Route::get('/pengumuman/{pengumuman:slug}', [PengumumanController::class, 'show'])->name('portal.pengumuman.show');
 
 Route::get('/login', [LoginController::class, 'create'])->name('login');
 Route::post('/login', [LoginController::class, 'store'])->name('login.store');
@@ -76,6 +79,8 @@ Route::prefix('admin')
             Route::post('/pengumuman', [AdminPengumumanController::class, 'store'])->name('pengumuman.store');
             Route::get('/pengumuman/{pengumuman}/edit', [AdminPengumumanController::class, 'edit'])->name('pengumuman.edit');
             Route::put('/pengumuman/{pengumuman}', [AdminPengumumanController::class, 'update'])->name('pengumuman.update');
+            Route::delete('/pengumuman/{pengumuman}', [AdminPengumumanController::class, 'destroy'])->name('pengumuman.destroy');
+            Route::post('/pengumuman/upload-image', [AdminPengumumanController::class, 'uploadImage'])->name('pengumuman.upload-image');
 
             Route::get('/arsip', [AdminArsipController::class, 'index'])->name('arsip.index');
 

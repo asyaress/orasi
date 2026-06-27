@@ -5,7 +5,7 @@
 @section('page_subtitle', 'Buat pengumuman ringkas dan jelas')
 
 @section('content')
-    <form method="post" action="{{ route('admin.pengumuman.store') }}">
+    <form method="post" action="{{ route('admin.pengumuman.store') }}" enctype="multipart/form-data">
         @csrf
 
         @include('admin.pengumuman._form', ['pengumuman' => null])
@@ -16,4 +16,3 @@
         </div>
     </form>
 @endsection
-

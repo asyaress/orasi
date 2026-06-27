@@ -5,7 +5,7 @@
 @section('page_subtitle', 'Perbarui konten dan status tayang')
 
 @section('content')
-    <form method="post" action="{{ route('admin.pengumuman.update', $pengumuman) }}">
+    <form method="post" action="{{ route('admin.pengumuman.update', $pengumuman) }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -17,4 +17,3 @@
         </div>
     </form>
 @endsection
-

@@ -21,6 +21,9 @@
     <link id="colors" href="{{ asset('css/colors/scheme-01.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/orasi-public.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/orasi-document-card.css') }}" rel="stylesheet" type="text/css">
+    @if (request()->routeIs('home', 'portal.pengumuman.*'))
+        <link href="{{ asset('css/orasi-pengumuman.css') }}" rel="stylesheet" type="text/css">
+    @endif
     <style>
         html,
         body {

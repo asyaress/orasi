@@ -690,6 +690,7 @@
                             <li><a class="menu-item {{ request()->routeIs('portal.daftar-orasi') ? 'active' : '' }}" href="{{ route('portal.daftar-orasi') }}">Daftar Orasi</a></li>
                             <li><a class="menu-item {{ request()->routeIs('portal.video-orasi') ? 'active' : '' }}" href="{{ route('portal.video-orasi') }}">Video Orasi</a></li>
                             <li><a class="menu-item {{ request()->routeIs('portal.dokumen-orasi') ? 'active' : '' }}" href="{{ route('portal.dokumen-orasi') }}">Dokumen Orasi</a></li>
+                            <li><a class="menu-item {{ request()->routeIs('portal.pengumuman.*') ? 'active' : '' }}" href="{{ route('portal.pengumuman.index') }}">Pengumuman</a></li>
                             <li><a class="menu-item {{ request()->routeIs('portal.statistik') ? 'active' : '' }}" href="{{ route('portal.statistik') }}">Statistik</a></li>
                         </ul>
                     </div>
