@@ -25,6 +25,7 @@ class PengumumanPublicTest extends TestCase
             'slug' => 'agenda-orasi-ilmiah-2026',
             'ringkasan' => 'Informasi agenda terbaru.',
             'konten' => '<p>Konten pengumuman resmi.</p>',
+            'cover_path' => 'images/pengumuman/cover-agenda.jpg',
             'tags' => ['Agenda', 'Orasi'],
             'status' => 'published',
             'published_at' => now()->subMinute(),
@@ -46,6 +47,9 @@ class PengumumanPublicTest extends TestCase
             ->assertSee('pengumuman-detail-video-banner', false)
             ->assertSee('youtube.com/embed/', false)
             ->assertDontSee('pengumuman-detail-cover', false)
+            ->assertSee('<meta property="og:type" content="article">', false)
+            ->assertSee('<meta property="og:image" content="'.$announcement->cover_url.'">', false)
+            ->assertSee('<meta name="twitter:card" content="summary_large_image">', false)
             ->assertSee('Konten pengumuman resmi.');
     }
 

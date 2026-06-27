@@ -9,6 +9,24 @@
     >
     <meta name="keywords" content="orasi ilmiah, guru besar, universitas mulawarman, unmul">
     <meta name="author" content="Universitas Mulawarman">
+    <link rel="canonical" href="@yield('canonical_url', url()->current())">
+
+    <meta property="og:locale" content="id_ID">
+    <meta property="og:site_name" content="Orasi Ilmiah Guru Besar Universitas Mulawarman">
+    <meta property="og:type" content="@yield('og_type', 'website')">
+    <meta property="og:title" content="@yield('og_title', 'Orasi Ilmiah Guru Besar Universitas Mulawarman')">
+    <meta property="og:description" content="@yield('og_description', 'Portal Orasi Ilmiah Guru Besar Universitas Mulawarman.')">
+    <meta property="og:url" content="@yield('canonical_url', url()->current())">
+    <meta property="og:image" content="@yield('og_image', asset('ChatGPT Image 2 Jun 2026, 15.52.54.png'))">
+    <meta property="og:image:alt" content="@yield('og_image_alt', 'Orasi Ilmiah Guru Besar Universitas Mulawarman')">
+    @hasSection('article_published_time')
+        <meta property="article:published_time" content="@yield('article_published_time')">
+    @endif
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('og_title', 'Orasi Ilmiah Guru Besar Universitas Mulawarman')">
+    <meta name="twitter:description" content="@yield('og_description', 'Portal Orasi Ilmiah Guru Besar Universitas Mulawarman.')">
+    <meta name="twitter:image" content="@yield('og_image', asset('ChatGPT Image 2 Jun 2026, 15.52.54.png'))">
     <!-- CSS Files
     ================================================== -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" id="bootstrap">

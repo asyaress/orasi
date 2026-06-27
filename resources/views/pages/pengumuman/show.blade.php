@@ -3,6 +3,13 @@
 @section('body_class', 'page-pengumuman page-pengumuman-detail')
 @section('title', $pengumuman->judul . ' | Pengumuman Orasi UNMUL')
 @section('meta_description', $pengumuman->ringkasan ?: \Illuminate\Support\Str::limit(strip_tags($pengumuman->konten), 155))
+@section('canonical_url', route('portal.pengumuman.show', $pengumuman))
+@section('og_type', 'article')
+@section('og_title', $pengumuman->judul)
+@section('og_description', $pengumuman->ringkasan ?: \Illuminate\Support\Str::limit(strip_tags($pengumuman->konten), 155))
+@section('og_image', $pengumuman->cover_url ?: asset('ChatGPT Image 2 Jun 2026, 15.52.54.png'))
+@section('og_image_alt', 'Cover pengumuman ' . $pengumuman->judul)
+@section('article_published_time', optional($pengumuman->published_at)->toIso8601String())
 
 @section('body')
     <div id="wrapper">
