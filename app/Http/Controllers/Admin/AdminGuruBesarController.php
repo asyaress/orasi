@@ -105,9 +105,17 @@ class AdminGuruBesarController extends Controller
 
     private function validateGuruBesar(Request $request, ?GuruBesar $guruBesar = null): array
     {
+        if ($request->filled('prodi_id') && blank($request->input('fakultas_id'))) {
+            $prodi = Prodi::query()->find($request->input('prodi_id'));
+
+            if ($prodi) {
+                $request->merge(['fakultas_id' => $prodi->fakultas_id]);
+            }
+        }
+
         $fakultasId = $request->input('fakultas_id');
 
-        return $request->validate([
+        $data = $request->validate([
             'pegawai_id' => [
                 'nullable',
                 'string',
@@ -115,7 +123,7 @@ class AdminGuruBesarController extends Controller
                 Rule::unique('guru_besars', 'pegawai_id')->ignore($guruBesar?->id),
             ],
             'nama' => ['required', 'string', 'max:255'],
-            'jenis_kelamin' => ['required', 'string', Rule::in([
+            'jenis_kelamin' => ['nullable', 'string', Rule::in([
                 GuruBesar::JENIS_KELAMIN_LAKI_LAKI,
                 GuruBesar::JENIS_KELAMIN_PEREMPUAN,
             ])],
@@ -126,7 +134,6 @@ class AdminGuruBesarController extends Controller
             'fakultas_id' => ['nullable', 'integer', 'exists:fakultas,id'],
             'prodi_id' => [
                 'nullable',
-                'prohibited_without:fakultas_id',
                 'integer',
                 Rule::exists('prodis', 'id')->where(fn ($query) => $query->where('fakultas_id', $fakultasId)),
             ],
@@ -141,6 +148,21 @@ class AdminGuruBesarController extends Controller
             'piagam' => ['nullable', 'file', 'max:10240', 'mimes:pdf,jpg,jpeg,png,webp'],
             'sertifikat' => ['nullable', 'file', 'max:10240', 'mimes:pdf,jpg,jpeg,png,webp'],
         ]);
+
+        $data['sumber'] = ($data['sumber'] ?? null) ?: GuruBesar::SUMBER_MANUAL;
+        $data['foto_display_mode'] = ($data['foto_display_mode'] ?? null) ?: GuruBesar::FOTO_DISPLAY_MODE_SVG_BG_PHOTO;
+
+        if (blank($data['fakultas_id'] ?? null)) {
+            $data['prodi_id'] = null;
+        }
+
+        foreach (['pegawai_id', 'jenis_kelamin', 'bidang_ilmu', 'judul_orasi', 'tmt', 'youtube_url', 'fakultas_snapshot', 'prodi_snapshot'] as $field) {
+            if (array_key_exists($field, $data) && blank($data[$field])) {
+                $data[$field] = null;
+            }
+        }
+
+        return $data;
     }
 
     private function handleUploads(Request $request, GuruBesar $guruBesar): void

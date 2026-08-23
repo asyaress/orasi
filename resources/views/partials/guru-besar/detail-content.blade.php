@@ -119,8 +119,8 @@
             border-radius: 14px;
             aspect-ratio: 9 / 16;
             background:
-                linear-gradient(180deg, rgba(255, 204, 83, 0.4), transparent 28%),
-                #f9aa28;
+                linear-gradient(180deg, color-mix(in srgb, var(--orasi-poster-frame, #f9aa28) 42%, #ffffff), transparent 28%),
+                var(--orasi-poster-frame, #f9aa28);
         }
 
         .orasi-detail-poster-frame.is-full-overlay::before {
@@ -139,7 +139,7 @@
             right: 4.5%;
             bottom: 12.2%;
             height: 43%;
-            background: #32b70c;
+            background: var(--orasi-poster-highlight, #32b70c);
             clip-path: polygon(0 38%, 100% 0, 100% 100%, 0 100%);
             z-index: 1;
         }
@@ -150,7 +150,7 @@
             left: 6%;
             right: 6%;
             z-index: 4;
-            color: #fff;
+            color: var(--orasi-poster-text, #fff);
             font-size: 2.45rem;
             font-weight: 800;
             line-height: 0.95;
@@ -216,7 +216,7 @@
             place-items: center;
             margin-bottom: 12%;
             background: rgba(255, 255, 255, 0.24);
-            color: #fff;
+            color: var(--orasi-poster-text, #fff);
             font-size: 3.1rem;
             font-weight: 800;
         }
@@ -234,8 +234,8 @@
             min-height: 11%;
             padding: 8px 12px;
             text-align: center;
-            color: #fff;
-            background: linear-gradient(180deg, #287ed9 0%, #08335f 100%);
+            color: var(--orasi-poster-text, #fff);
+            background: linear-gradient(180deg, var(--orasi-poster-footer-start, #287ed9) 0%, var(--orasi-poster-footer-end, #08335f) 100%);
             box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.12) inset;
         }
 
@@ -411,8 +411,8 @@
             overflow: hidden;
             border-radius: 8px;
             background:
-                linear-gradient(180deg, rgba(255, 204, 83, 0.38), transparent 28%),
-                #f9aa28;
+                linear-gradient(180deg, color-mix(in srgb, var(--orasi-poster-frame, #f9aa28) 42%, #ffffff), transparent 28%),
+                var(--orasi-poster-frame, #f9aa28);
             box-shadow: 0 12px 32px rgba(31, 41, 55, 0.12);
             transition: transform 0.28s ease, box-shadow 0.28s ease;
         }
@@ -437,7 +437,7 @@
             right: 4.5%;
             bottom: 8%;
             height: 43%;
-            background: #32b70c;
+            background: var(--orasi-poster-highlight, #32b70c);
             clip-path: polygon(0 38%, 100% 0, 100% 100%, 0 100%);
             z-index: 1;
         }
@@ -448,7 +448,7 @@
             left: 6%;
             right: 6%;
             z-index: 4;
-            color: #fff;
+            color: var(--orasi-poster-text, #fff);
             font-size: clamp(1rem, 2.2vw, 1.45rem);
             font-weight: 800;
             line-height: 0.95;
@@ -514,7 +514,7 @@
             place-items: center;
             margin-bottom: 12%;
             background: rgba(255, 255, 255, 0.24);
-            color: #fff;
+            color: var(--orasi-poster-text, #fff);
             font-size: 2rem;
             font-weight: 800;
         }
@@ -762,6 +762,7 @@
 @endpush
 
 @php
+    use App\Models\PosterTheme;
     use Illuminate\Support\Str;
 
     $cleanName = preg_replace('/\b(prof|dr|ir|mt|mpd|msi|mh|mp|phd|sh|st|msc)\b\.?/i', ' ', $guruBesar->nama);
@@ -775,6 +776,7 @@
     $useFullOverlay = $guruBesar->usesFullPngOverlay();
     $orasi = $guruBesar->orasiIlmiah;
     $archiveYear = $guruBesar->archiveYear();
+    $posterTheme = $posterThemeMap[$archiveYear] ?? PosterTheme::defaultPalette($archiveYear);
     $judulOrasi = $guruBesar->judul_orasi ?: $orasi?->judul;
     $detailBadges = collect([
         $guruBesar->displayFakultas() !== '-' ? $guruBesar->displayFakultas() : null,
@@ -813,7 +815,7 @@
                 <div class="col-lg-5">
                     <div class="orasi-detail-visual">
                         <div class="orasi-detail-poster">
-                            <div class="orasi-detail-poster-frame{{ $useFullOverlay ? ' is-full-overlay' : '' }}">
+                            <div class="orasi-detail-poster-frame{{ $useFullOverlay ? ' is-full-overlay' : '' }}" style="{{ PosterTheme::cssVariables($posterTheme) }}">
                                 <div class="orasi-detail-poster-title">
                                     Orasi Ilmiah<br>Guru Besar
                                     <span class="orasi-detail-poster-campus">UNIVERSITAS MULAWARMAN</span>
@@ -1029,6 +1031,8 @@
                                                 ->map(fn ($part) => Str::upper(Str::substr($part, 0, 1)))
                                                 ->implode('');
                                             $useFullOverlay = $relatedGuru->usesFullPngOverlay();
+                                            $relatedYear = $relatedGuru->archiveYear();
+                                            $relatedTheme = $posterThemeMap[$relatedYear] ?? PosterTheme::defaultPalette($relatedYear);
                                         @endphp
                                         <div class="swiper-slide">
                                             <a
@@ -1036,7 +1040,7 @@
                                                 class="orasi-detail-related-link"
                                                 aria-label="Profil {{ $relatedGuru->nama }}"
                                             >
-                                                <div class="orasi-detail-related-poster{{ $useFullOverlay ? ' is-full-overlay' : '' }}">
+                                                <div class="orasi-detail-related-poster{{ $useFullOverlay ? ' is-full-overlay' : '' }}" style="{{ PosterTheme::cssVariables($relatedTheme) }}">
                                                     <div class="orasi-detail-related-poster-title">
                                                         Orasi Ilmiah<br>Guru Besar
                                                         <span>UNIVERSITAS MULAWARMAN</span>

@@ -33,9 +33,9 @@
                 <input id="nama" name="nama" class="form-control" value="{{ old('nama', $guruBesar->nama ?? '') }}" required>
             </div>
             <div class="col-12 col-md-4">
-                <label class="form-label" for="jenis_kelamin">Jenis Kelamin <span class="text-danger">*</span></label>
+                <label class="form-label" for="jenis_kelamin">Jenis Kelamin</label>
                 @php($jenisKelamin = old('jenis_kelamin', $guruBesar->jenis_kelamin ?? ''))
-                <select id="jenis_kelamin" name="jenis_kelamin" class="form-select" required>
+                <select id="jenis_kelamin" name="jenis_kelamin" class="form-select">
                     <option value="">— Pilih jenis kelamin —</option>
                     @foreach (\App\Models\GuruBesar::jenisKelaminOptions() as $value => $label)
                         <option value="{{ $value }}" @selected($jenisKelamin === $value)>{{ $label }}</option>

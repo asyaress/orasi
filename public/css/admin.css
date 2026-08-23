@@ -615,6 +615,176 @@ body.admin-body {
   border-radius: var(--admin-radius-sm);
 }
 
+.poster-theme-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.poster-theme-card {
+  display: grid;
+  grid-template-columns: 132px minmax(0, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius-sm);
+  background: #f8fafc;
+}
+
+.poster-theme-preview-wrap {
+  min-width: 0;
+}
+
+.poster-theme-preview {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--orasi-poster-frame, #f9aa28) 42%, #ffffff), transparent 28%),
+    var(--orasi-poster-frame, #f9aa28);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.14);
+}
+
+.poster-theme-preview::before {
+  content: "";
+  position: absolute;
+  left: 4.5%;
+  right: 4.5%;
+  bottom: 12%;
+  height: 43%;
+  background: var(--orasi-poster-highlight, #32b70c);
+  clip-path: polygon(0 38%, 100% 0, 100% 100%, 0 100%);
+  z-index: 1;
+}
+
+.poster-theme-preview-title {
+  position: absolute;
+  top: 5%;
+  left: 7%;
+  right: 7%;
+  z-index: 4;
+  color: var(--orasi-poster-text, #ffffff);
+  font-size: 1.08rem;
+  font-weight: 800;
+  line-height: 0.95;
+  text-align: center;
+}
+
+.poster-theme-preview-title span {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.44rem;
+  line-height: 1.1;
+}
+
+.poster-theme-preview-person {
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: 22%;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.24);
+  color: var(--orasi-poster-text, #ffffff);
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.poster-theme-preview-footer {
+  position: absolute;
+  left: 4.5%;
+  right: 4.5%;
+  bottom: 7.8%;
+  z-index: 5;
+  min-height: 11%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 8px;
+  text-align: center;
+  color: var(--orasi-poster-text, #ffffff);
+  background: linear-gradient(180deg, var(--orasi-poster-footer-start, #287ed9) 0%, var(--orasi-poster-footer-end, #08335f) 100%);
+}
+
+.poster-theme-preview-footer strong,
+.poster-theme-preview-footer span {
+  display: block;
+  max-width: 100%;
+  font-size: 0.36rem;
+  line-height: 1.08;
+  font-weight: 800;
+}
+
+.poster-theme-preview-footer strong {
+  font-size: 0.46rem;
+}
+
+.poster-theme-form {
+  min-width: 0;
+}
+
+.poster-theme-year {
+  color: var(--admin-text);
+  font-size: 1.45rem;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.poster-theme-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.poster-theme-fields label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0.58rem 0.7rem;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: var(--admin-radius-sm);
+  background: #fff;
+}
+
+.poster-theme-fields span {
+  color: var(--admin-muted);
+  font-size: 0.76rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.poster-theme-fields input[type="color"] {
+  flex: 0 0 auto;
+  width: 38px;
+  height: 32px;
+  padding: 2px;
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  border-radius: 8px;
+  background: #fff;
+}
+
+@media (max-width: 575.98px) {
+  .poster-theme-card {
+    grid-template-columns: 112px minmax(0, 1fr);
+    gap: 0.85rem;
+    padding: 0.85rem;
+  }
+
+  .poster-theme-fields {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 575.98px) {
   .admin-shell {
     min-height: 100svh;

@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\AdminOrasiGuruBesarController;
 use App\Http\Controllers\Admin\AdminFakultasController;
 use App\Http\Controllers\Admin\AdminProdiController;
 use App\Http\Controllers\Admin\AdminSecurityController;
+use App\Http\Controllers\Admin\AdminPosterThemeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\TwoFactorSetupController;
 use App\Http\Controllers\Auth\TwoFactorChallengeController;
@@ -73,6 +74,11 @@ Route::prefix('admin')
             Route::delete('/guru-besar/{guruBesar}', [AdminGuruBesarController::class, 'destroy'])->name('guru-besar.destroy');
 
             Route::get('/statistics', [AdminStatisticsController::class, 'index'])->name('statistics.index');
+
+            Route::get('/poster-themes', [AdminPosterThemeController::class, 'index'])->name('poster-themes.index');
+            Route::put('/poster-themes/{year}', [AdminPosterThemeController::class, 'update'])
+                ->whereNumber('year')
+                ->name('poster-themes.update');
 
             Route::get('/pengumuman', [AdminPengumumanController::class, 'index'])->name('pengumuman.index');
             Route::get('/pengumuman/create', [AdminPengumumanController::class, 'create'])->name('pengumuman.create');

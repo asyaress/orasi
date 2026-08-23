@@ -753,8 +753,8 @@
             overflow: hidden;
             border-radius: 4px;
             background:
-                linear-gradient(180deg, rgba(255, 204, 83, 0.38), transparent 28%),
-                #f9aa28;
+                linear-gradient(180deg, color-mix(in srgb, var(--orasi-poster-frame, #f9aa28) 42%, #ffffff), transparent 28%),
+                var(--orasi-poster-frame, #f9aa28);
         }
 
         .orasi-professor-poster.is-full-overlay::before {
@@ -773,7 +773,7 @@
             right: 4.5%;
             bottom: 12.2%;
             height: 43%;
-            background: #32b70c;
+            background: var(--orasi-poster-highlight, #32b70c);
             clip-path: polygon(0 38%, 100% 0, 100% 100%, 0 100%);
             z-index: 1;
         }
@@ -784,7 +784,7 @@
             left: 6%;
             right: 6%;
             z-index: 4;
-            color: #fff;
+            color: var(--orasi-poster-text, #fff);
             font-size: 2.35rem;
             font-weight: 800;
             line-height: 0.95;
@@ -851,7 +851,7 @@
             place-items: center;
             margin-bottom: 12%;
             background: rgba(255, 255, 255, 0.24);
-            color: #fff;
+            color: var(--orasi-poster-text, #fff);
             font-size: 3rem;
             font-weight: 800;
         }
@@ -869,8 +869,8 @@
             justify-content: center;
             padding: 8px 12px;
             text-align: center;
-            color: #fff;
-            background: linear-gradient(180deg, #287ed9 0%, #08335f 100%);
+            color: var(--orasi-poster-text, #fff);
+            background: linear-gradient(180deg, var(--orasi-poster-footer-start, #287ed9) 0%, var(--orasi-poster-footer-end, #08335f) 100%);
             box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.12) inset;
         }
 
@@ -2741,6 +2741,7 @@
 @endpush
 
 @php
+    use App\Models\PosterTheme;
     use Illuminate\Support\Str;
 
     $pageMode = $pageMode ?? 'home';
@@ -3054,11 +3055,13 @@
                                                 $posterFaculty = Str::upper($guru->displayFakultas() !== '-' ? $guru->displayFakultas() : 'UNIVERSITAS MULAWARMAN');
                                                 $posterField = $guru->bidang_ilmu ?: 'Bidang ilmu belum diisi';
                                                 $useFullOverlay = $guru->usesFullPngOverlay();
+                                                $posterYear = $guru->archiveYear();
+                                                $posterTheme = $posterThemeMap[$posterYear] ?? PosterTheme::defaultPalette($posterYear);
                                             @endphp
                                             <div class="col-xl-3 col-md-6">
                                                 <a href="{{ route('portal.guru-besar.show', $guru) }}" class="orasi-professor-link">
                                                     <div class="orasi-professor-card">
-                                                        <div class="orasi-professor-poster{{ $useFullOverlay ? ' is-full-overlay' : '' }}">
+                                                        <div class="orasi-professor-poster{{ $useFullOverlay ? ' is-full-overlay' : '' }}" style="{{ PosterTheme::cssVariables($posterTheme) }}">
                                                             <div class="orasi-professor-poster-title">
                                                                 Orasi Ilmiah<br>Guru Besar
                                                                 <span class="orasi-professor-poster-campus">UNIVERSITAS MULAWARMAN</span>
@@ -3131,11 +3134,13 @@
                                         $posterFaculty = Str::upper($guru->displayFakultas() !== '-' ? $guru->displayFakultas() : 'UNIVERSITAS MULAWARMAN');
                                         $posterField = $guru->bidang_ilmu ?: 'Bidang ilmu belum diisi';
                                         $useFullOverlay = $guru->usesFullPngOverlay();
+                                        $posterYear = $guru->archiveYear();
+                                        $posterTheme = $posterThemeMap[$posterYear] ?? PosterTheme::defaultPalette($posterYear);
                                     @endphp
                                     <div class="col-xl-3 col-md-6">
                                         <a href="{{ route('portal.guru-besar.show', $guru) }}" class="orasi-professor-link">
                                             <div class="orasi-professor-card">
-                                                <div class="orasi-professor-poster{{ $useFullOverlay ? ' is-full-overlay' : '' }}">
+                                                <div class="orasi-professor-poster{{ $useFullOverlay ? ' is-full-overlay' : '' }}" style="{{ PosterTheme::cssVariables($posterTheme) }}">
                                                     <div class="orasi-professor-poster-title">
                                                         Orasi Ilmiah<br>Guru Besar
                                                         <span class="orasi-professor-poster-campus">UNIVERSITAS MULAWARMAN</span>

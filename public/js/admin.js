@@ -1,44 +1,51 @@
 /**
- * Admin UI helpers — Orasi Unmul
+ * Admin UI helpers - Orasi Unmul
  */
 (function () {
     'use strict';
 
-    /** Fakultas → Prodi cascading select */
+    /** Fakultas -> Prodi cascading select */
     function initFakultasProdiCascade() {
         const fakultasSelect = document.getElementById('fakultas_id');
         const prodiSelect = document.getElementById('prodi_id');
         if (!fakultasSelect || !prodiSelect) return;
 
-        const prodiOptions = Array.from(prodiSelect.querySelectorAll('option[data-fakultas-id]'));
+        const prodiOptions = Array.from(prodiSelect.querySelectorAll('option[data-fakultas-id]')).map((opt) => ({
+            value: opt.value,
+            label: opt.textContent,
+            fakultasId: opt.getAttribute('data-fakultas-id') || '',
+        }));
         const initialProdi = prodiSelect.dataset.selected || '';
 
         function filterProdi(preserveSelection) {
             const fakultasId = fakultasSelect.value;
-            const placeholder = prodiSelect.querySelector('option[value=""]');
+            const desired = preserveSelection ? (prodiSelect.value || initialProdi) : '';
 
-            if (placeholder) {
-                placeholder.textContent = fakultasId ? '— Pilih prodi —' : 'Pilih fakultas terlebih dahulu';
-            }
+            prodiSelect.innerHTML = '';
+
+            const placeholder = document.createElement('option');
+            placeholder.value = '';
+            placeholder.textContent = fakultasId ? 'Pilih prodi' : 'Pilih fakultas terlebih dahulu';
+            prodiSelect.appendChild(placeholder);
+
+            const matchingOptions = prodiOptions.filter((opt) => opt.fakultasId === fakultasId);
+
+            matchingOptions.forEach((opt) => {
+                const option = document.createElement('option');
+                option.value = opt.value;
+                option.textContent = opt.label;
+                option.dataset.fakultasId = opt.fakultasId;
+                prodiSelect.appendChild(option);
+            });
 
             prodiSelect.disabled = !fakultasId;
-
-            prodiOptions.forEach((opt) => {
-                const match = Boolean(fakultasId) && opt.getAttribute('data-fakultas-id') === fakultasId;
-                opt.hidden = !match;
-                opt.disabled = !match;
-            });
 
             if (!fakultasId) {
                 prodiSelect.value = '';
                 return;
             }
 
-            const desired = preserveSelection ? (prodiSelect.value || initialProdi) : '';
-            const valid = prodiOptions.some(
-                (opt) => opt.value === desired && !opt.hidden && !opt.disabled
-            );
-
+            const valid = matchingOptions.some((opt) => opt.value === desired);
             prodiSelect.value = valid ? desired : '';
         }
 

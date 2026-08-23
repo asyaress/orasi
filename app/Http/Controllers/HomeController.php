@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\GuruBesar;
 use App\Models\OrasiIlmiah;
 use App\Models\Pengumuman;
+use App\Models\PosterTheme;
 use App\Services\OrasiChatbotService;
 use App\Services\OrasiDocumentMergeService;
 use Illuminate\Contracts\View\View;
@@ -81,6 +82,11 @@ class HomeController extends Controller
             'youtubeEmbedUrl' => $this->youtubeEmbedUrl($guruBesar->youtube_url),
             'youtubeThumbnailUrl' => $this->youtubeThumbnailUrl($guruBesar->youtube_url),
             'heroBackground' => asset('foto-gor-27.png'),
+            'posterThemeMap' => PosterTheme::paletteMapForYears(
+                $relatedByYear
+                    ->map(fn (GuruBesar $item) => $item->archiveYear())
+                    ->push($guruBesar->archiveYear())
+            ),
         ]);
     }
 
@@ -617,6 +623,12 @@ class HomeController extends Controller
             ];
         }
 
+        $posterThemeYears = collect($archiveYears)
+            ->merge($latestOrators->map(fn (GuruBesar $guru) => $guru->archiveYear()))
+            ->merge($orasiHighlights->pluck('tahun'))
+            ->push($featuredGuru?->archiveYear())
+            ->push($featuredOrasi?->tahun);
+
         return [
             'featuredGuru' => $featuredGuru,
             'featuredOrasi' => $featuredOrasi,
@@ -655,6 +667,7 @@ class HomeController extends Controller
             'excelStatSummary' => $excelInsights['statSummary'],
             'activeOrasiFilter' => $activeOrasiFilter,
             'activeOrasiFilterStats' => $activeOrasiFilterStats,
+            'posterThemeMap' => PosterTheme::paletteMapForYears($posterThemeYears),
         ];
     }
 

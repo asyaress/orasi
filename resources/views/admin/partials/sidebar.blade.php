@@ -25,6 +25,9 @@
             <a class="nav-link {{ request()->routeIs('admin.statistics.*') ? 'active' : '' }}" href="{{ route('admin.statistics.index') }}">
                 <i class="bi bi-bar-chart"></i> Statistic
             </a>
+            <a class="nav-link {{ request()->routeIs('admin.poster-themes.*') ? 'active' : '' }}" href="{{ route('admin.poster-themes.index') }}">
+                <i class="bi bi-palette"></i> Tema Poster
+            </a>
             <a class="nav-link {{ request()->routeIs('admin.pengumuman.*') ? 'active' : '' }}" href="{{ route('admin.pengumuman.index') }}">
                 <i class="bi bi-bell"></i> Pengumuman
             </a>
@@ -53,4 +56,3 @@
         </div>
     </div>
 </div>
-
