@@ -252,6 +252,13 @@
             font-weight: 800;
         }
 
+        .orasi-detail-poster-footer .orasi-detail-poster-footer-label {
+            margin-top: 5px;
+            font-size: 0.5rem;
+            line-height: 1;
+            opacity: 0.9;
+        }
+
         .orasi-detail-section {
             padding: 84px 0;
         }
@@ -830,6 +837,7 @@
                                 <div class="orasi-detail-poster-footer">
                                     <strong>{{ $guruBesar->nama }}</strong>
                                     <span>GURU BESAR</span>
+                                    <span class="orasi-detail-poster-footer-label">BIDANG ILMU</span>
                                     <span>{{ $posterField }}</span>
                                     <span>{{ $posterFaculty }}</span>
                                 </div>

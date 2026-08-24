@@ -888,6 +888,14 @@
             font-weight: 800;
         }
 
+        .orasi-professor-footer-label {
+            margin-top: 4px;
+            font-size: 0.46rem;
+            line-height: 1;
+            font-weight: 800;
+            opacity: 0.9;
+        }
+
         .orasi-professor-footer-field,
         .orasi-professor-footer-faculty {
             max-width: 100%;
@@ -3082,6 +3090,7 @@
                                                             <div class="orasi-professor-poster-footer">
                                                                 <div class="orasi-professor-footer-name">{{ $guru->nama }}</div>
                                                                 <div class="orasi-professor-footer-role">GURU BESAR</div>
+                                                                <div class="orasi-professor-footer-label">BIDANG ILMU</div>
                                                                 <div class="orasi-professor-footer-field">{{ $posterField }}</div>
                                                                 <div class="orasi-professor-footer-faculty">{{ $posterFaculty }}</div>
                                                             </div>
@@ -3170,6 +3179,7 @@
                                                     <div class="orasi-professor-poster-footer">
                                                         <div class="orasi-professor-footer-name">{{ $guru->nama }}</div>
                                                         <div class="orasi-professor-footer-role">GURU BESAR</div>
+                                                        <div class="orasi-professor-footer-label">BIDANG ILMU</div>
                                                         <div class="orasi-professor-footer-field">{{ $posterField }}</div>
                                                         <div class="orasi-professor-footer-faculty">{{ $posterFaculty }}</div>
                                                     </div>
