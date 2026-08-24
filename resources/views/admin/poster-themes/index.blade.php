@@ -35,8 +35,7 @@
                                 <div class="poster-theme-preview-footer">
                                     <strong>Nama Guru Besar</strong>
                                     <span>GURU BESAR</span>
-                                    <span>BIDANG ILMU</span>
-                                    <span>Bidang Ilmu</span>
+                                    <span>BIDANG ILMU: Bidang Ilmu</span>
                                     <span>FAKULTAS</span>
                                 </div>
                             </div>

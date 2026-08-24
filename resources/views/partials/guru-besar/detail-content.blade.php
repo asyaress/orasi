@@ -837,8 +837,7 @@
                                 <div class="orasi-detail-poster-footer">
                                     <strong>{{ $guruBesar->nama }}</strong>
                                     <span>GURU BESAR</span>
-                                    <span class="orasi-detail-poster-footer-label">BIDANG ILMU</span>
-                                    <span>{{ $posterField }}</span>
+                                    <span>BIDANG ILMU: {{ $posterField }}</span>
                                     <span>{{ $posterFaculty }}</span>
                                 </div>
                             </div>
