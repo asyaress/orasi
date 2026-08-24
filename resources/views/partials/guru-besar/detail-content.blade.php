@@ -449,20 +449,20 @@
         .orasi-detail-related-poster-title {
             position: absolute;
             top: 4.7%;
-            left: 6%;
-            right: 6%;
+            left: 4.5%;
+            right: 4.5%;
             z-index: 4;
             color: var(--orasi-poster-text, #fff);
-            font-size: clamp(1rem, 2.2vw, 1.45rem);
+            font-size: clamp(1.45rem, 3vw, 2.15rem);
             font-weight: 800;
-            line-height: 0.95;
+            line-height: 0.92;
             text-align: center;
         }
 
         .orasi-detail-related-poster-title span {
             display: block;
-            margin-top: 6px;
-            font-size: clamp(0.58rem, 1.2vw, 0.72rem);
+            margin-top: 8px;
+            font-size: clamp(0.72rem, 1.45vw, 0.94rem);
             font-weight: 800;
             line-height: 1.1;
         }
