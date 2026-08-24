@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\OrasiIlmiah;
 use App\Models\PosterTheme;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class AdminPosterThemeController extends Controller
 {
@@ -21,10 +22,12 @@ class AdminPosterThemeController extends Controller
             ->sortDesc()
             ->values();
 
-        $themes = PosterTheme::query()
-            ->whereIn('year', $years)
-            ->get()
-            ->keyBy('year');
+        $themes = Schema::hasTable('poster_themes')
+            ? PosterTheme::query()
+                ->whereIn('year', $years)
+                ->get()
+                ->keyBy('year')
+            : collect();
 
         $themeRows = $years->map(function (int $year) use ($themes) {
             $theme = $themes->get($year);
@@ -41,6 +44,12 @@ class AdminPosterThemeController extends Controller
 
     public function update(Request $request, int $year)
     {
+        if (! Schema::hasTable('poster_themes')) {
+            return redirect()
+                ->route('admin.poster-themes.index')
+                ->with('warning', 'Tabel tema poster belum tersedia. Jalankan php artisan migrate --force di server.');
+        }
+
         $data = $request->validate([
             'name' => ['nullable', 'string', 'max:80'],
             'frame_background' => ['required', 'regex:/^#[0-9a-fA-F]{6}$/'],
