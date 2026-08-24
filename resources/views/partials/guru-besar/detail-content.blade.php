@@ -118,9 +118,7 @@
             overflow: hidden;
             border-radius: 14px;
             aspect-ratio: 9 / 16;
-            background:
-                linear-gradient(180deg, color-mix(in srgb, var(--orasi-poster-frame, #f9aa28) 42%, #ffffff), transparent 28%),
-                var(--orasi-poster-frame, #f9aa28);
+            background: var(--orasi-poster-frame, #f9aa28);
         }
 
         .orasi-detail-poster-frame.is-full-overlay::before {
@@ -417,9 +415,7 @@
             aspect-ratio: 9 / 16;
             overflow: hidden;
             border-radius: 8px;
-            background:
-                linear-gradient(180deg, color-mix(in srgb, var(--orasi-poster-frame, #f9aa28) 42%, #ffffff), transparent 28%),
-                var(--orasi-poster-frame, #f9aa28);
+            background: var(--orasi-poster-frame, #f9aa28);
             box-shadow: 0 12px 32px rgba(31, 41, 55, 0.12);
             transition: transform 0.28s ease, box-shadow 0.28s ease;
         }
@@ -433,7 +429,8 @@
             opacity: 0;
         }
 
-        .orasi-detail-related-poster.is-full-overlay .orasi-detail-related-poster-title {
+        .orasi-detail-related-poster.is-full-overlay .orasi-detail-related-poster-title,
+        .orasi-detail-related-poster.is-full-overlay .orasi-detail-related-poster-footer {
             display: none;
         }
 
@@ -442,7 +439,7 @@
             position: absolute;
             left: 4.5%;
             right: 4.5%;
-            bottom: 8%;
+            bottom: 12.2%;
             height: 43%;
             background: var(--orasi-poster-highlight, #32b70c);
             clip-path: polygon(0 38%, 100% 0, 100% 100%, 0 100%);
@@ -474,8 +471,8 @@
             position: absolute;
             left: 5%;
             right: 5%;
-            bottom: 6%;
-            height: 72%;
+            bottom: 12.2%;
+            height: 68%;
             z-index: 3;
             display: flex;
             align-items: flex-end;
@@ -524,6 +521,50 @@
             color: var(--orasi-poster-text, #fff);
             font-size: 2rem;
             font-weight: 800;
+        }
+
+        .orasi-detail-related-poster-footer {
+            position: absolute;
+            left: 4.5%;
+            right: 4.5%;
+            bottom: 7.8%;
+            z-index: 5;
+            min-height: 11%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 8px;
+            text-align: center;
+            color: var(--orasi-poster-text, #fff);
+            background: linear-gradient(180deg, var(--orasi-poster-footer-start, #287ed9) 0%, var(--orasi-poster-footer-end, #08335f) 100%);
+            box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.12) inset;
+        }
+
+        .orasi-detail-related-footer-name {
+            max-width: 100%;
+            font-size: clamp(0.5rem, 1vw, 0.68rem);
+            line-height: 1.08;
+            font-weight: 800;
+        }
+
+        .orasi-detail-related-footer-role {
+            margin-top: 2px;
+            font-size: clamp(0.38rem, 0.8vw, 0.5rem);
+            line-height: 1;
+            font-weight: 800;
+        }
+
+        .orasi-detail-related-footer-field,
+        .orasi-detail-related-footer-faculty {
+            max-width: 100%;
+            font-size: clamp(0.34rem, 0.7vw, 0.45rem);
+            line-height: 1.08;
+            font-weight: 800;
+        }
+
+        .orasi-detail-related-footer-field {
+            margin-top: 3px;
         }
 
         .orasi-detail-pdf-section {
@@ -1040,6 +1081,8 @@
                                             $useFullOverlay = $relatedGuru->usesFullPngOverlay();
                                             $relatedYear = $relatedGuru->archiveYear();
                                             $relatedTheme = $posterThemeMap[$relatedYear] ?? PosterTheme::defaultPalette($relatedYear);
+                                            $relatedPosterFaculty = Str::upper($relatedGuru->displayFakultas() !== '-' ? $relatedGuru->displayFakultas() : 'UNIVERSITAS MULAWARMAN');
+                                            $relatedPosterField = $relatedGuru->bidang_ilmu ?: 'Bidang ilmu belum diisi';
                                         @endphp
                                         <div class="swiper-slide">
                                             <a
@@ -1062,6 +1105,12 @@
                                                         @else
                                                             <div class="orasi-detail-related-placeholder">{{ $initials ?: 'GB' }}</div>
                                                         @endif
+                                                    </div>
+                                                    <div class="orasi-detail-related-poster-footer">
+                                                        <div class="orasi-detail-related-footer-name">{{ $relatedGuru->nama }}</div>
+                                                        <div class="orasi-detail-related-footer-role">GURU BESAR</div>
+                                                        <div class="orasi-detail-related-footer-field">BIDANG ILMU: {{ $relatedPosterField }}</div>
+                                                        <div class="orasi-detail-related-footer-faculty">{{ $relatedPosterFaculty }}</div>
                                                     </div>
                                                 </div>
                                             </a>

@@ -752,9 +752,7 @@
             aspect-ratio: 9 / 16;
             overflow: hidden;
             border-radius: 4px;
-            background:
-                linear-gradient(180deg, color-mix(in srgb, var(--orasi-poster-frame, #f9aa28) 42%, #ffffff), transparent 28%),
-                var(--orasi-poster-frame, #f9aa28);
+            background: var(--orasi-poster-frame, #f9aa28);
         }
 
         .orasi-professor-poster.is-full-overlay::before {
