@@ -779,11 +779,11 @@
         .orasi-professor-poster-title {
             position: absolute;
             top: 4.7%;
-            left: 6%;
-            right: 6%;
+            left: 5%;
+            right: 5%;
             z-index: 4;
             color: var(--orasi-poster-text, #fff);
-            font-size: 2.35rem;
+            font-size: 2rem;
             font-weight: 800;
             line-height: 0.95;
             letter-spacing: 0;
@@ -792,8 +792,8 @@
 
         .orasi-professor-poster-campus {
             display: block;
-            margin-top: 8px;
-            font-size: 1rem;
+            margin-top: 7px;
+            font-size: 0.82rem;
             font-weight: 800;
             line-height: 1.1;
         }
@@ -2485,11 +2485,11 @@
 
         @media (max-width: 1399.98px) {
             .orasi-professor-poster-title {
-                font-size: 2rem;
+                font-size: 1.65rem;
             }
 
             .orasi-professor-poster-campus {
-                font-size: 0.85rem;
+                font-size: 0.68rem;
             }
 
             .orasi-professor-footer-name {
@@ -2516,11 +2516,11 @@
             }
 
             .orasi-professor-poster-title {
-                font-size: 2.35rem;
+                font-size: 1.95rem;
             }
 
             .orasi-professor-poster-campus {
-                font-size: 1rem;
+                font-size: 0.8rem;
             }
 
             .orasi-professor-footer-name {
@@ -2556,11 +2556,11 @@
             }
 
             .orasi-professor-poster-title {
-                font-size: 2.05rem;
+                font-size: 1.8rem;
             }
 
             .orasi-professor-poster-campus {
-                font-size: 0.86rem;
+                font-size: 0.74rem;
             }
 
             .orasi-professor-name {
