@@ -63,6 +63,7 @@ Route::prefix('admin')
 
             // Penugasan Guru Besar ke Orasi tahun tertentu
             Route::post('/orasi-ilmiah/{orasiIlmiah}/guru-besar/attach', [AdminOrasiGuruBesarController::class, 'attach'])->name('orasi-ilmiah.guru-besar.attach');
+            Route::put('/orasi-ilmiah/{orasiIlmiah}/guru-besar/order', [AdminOrasiGuruBesarController::class, 'reorder'])->name('orasi-ilmiah.guru-besar.reorder');
             Route::delete('/orasi-ilmiah/{orasiIlmiah}/guru-besar/{guruBesar}/detach', [AdminOrasiGuruBesarController::class, 'detach'])->name('orasi-ilmiah.guru-besar.detach');
 
             // Master data Guru Besar (kepegawaian + manual)

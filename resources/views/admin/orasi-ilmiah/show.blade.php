@@ -60,6 +60,7 @@
         id="orasi-assign-app"
         class="admin-card"
         data-attach-url="{{ route('admin.orasi-ilmiah.guru-besar.attach', $orasi) }}"
+        data-sort-url="{{ route('admin.orasi-ilmiah.guru-besar.reorder', $orasi) }}"
     >
         <div class="admin-card-body">
             <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
@@ -67,7 +68,7 @@
                     <div class="admin-section-title mb-1"><i class="bi bi-arrows-move me-1"></i> Penugasan Guru Besar</div>
                     <p class="admin-section-hint mb-0">
                         <strong>Seret</strong> kartu ke kanan, <strong>klik</strong> untuk pilih lalu «Tugaskan terpilih», atau <strong>double-klik</strong> untuk langsung menugaskan.
-                        Seret kembali ke kiri untuk melepas.
+                        Seret kartu di kolom kanan untuk mengatur urutan tampil di website, atau seret kembali ke kiri untuk melepas.
                     </p>
                 </div>
                 <span class="badge badge-soft-yellow fs-6" id="assigned-count">{{ $orasi->guruBesars->count() }} orang</span>
@@ -132,5 +133,5 @@
 
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
-    <script src="{{ asset('js/admin-orasi-assign.js') }}"></script>
+    <script src="{{ asset('js/admin-orasi-assign.js') }}?v={{ filemtime(public_path('js/admin-orasi-assign.js')) }}"></script>
 @endpush

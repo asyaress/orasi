@@ -35,6 +35,7 @@ class GuruBesar extends Model
 
     protected $fillable = [
         'orasi_ilmiah_id',
+        'urutan',
         'pegawai_id',
         'sumber',
         'nama',
@@ -57,6 +58,7 @@ class GuruBesar extends Model
 
     protected $casts = [
         'tmt' => 'date',
+        'urutan' => 'integer',
     ];
 
     public function orasiIlmiah(): BelongsTo
@@ -92,6 +94,14 @@ class GuruBesar extends Model
             ->orderBy("{$table}.nama");
     }
 
+    public function scopeOrderByUrutan(Builder $query, string $table = 'guru_besars'): Builder
+    {
+        return $query
+            ->orderByRaw("CASE WHEN {$table}.urutan IS NULL THEN 1 ELSE 0 END")
+            ->orderBy("{$table}.urutan")
+            ->orderByTmtAscending($table);
+    }
+
     /**
      * @param  Collection<int, self>  $gurus
      * @return Collection<int, self>
@@ -100,6 +110,22 @@ class GuruBesar extends Model
     {
         return $gurus
             ->sortBy(fn (self $guru) => [
+                $guru->tmt?->format('Y-m-d') ?? '9999-12-31',
+                Str::lower($guru->nama),
+            ])
+            ->values();
+    }
+
+    /**
+     * @param  Collection<int, self>  $gurus
+     * @return Collection<int, self>
+     */
+    public static function sortByUrutan(Collection $gurus): Collection
+    {
+        return $gurus
+            ->sortBy(fn (self $guru) => [
+                $guru->urutan === null ? 1 : 0,
+                $guru->urutan ?? PHP_INT_MAX,
                 $guru->tmt?->format('Y-m-d') ?? '9999-12-31',
                 Str::lower($guru->nama),
             ])
@@ -123,9 +149,9 @@ class GuruBesar extends Model
         }
 
         if ($this->prodi?->nama) {
-            $jenjang = filled($this->prodi->jenjang) ? trim($this->prodi->jenjang) . ' ' : '';
+            $jenjang = filled($this->prodi->jenjang) ? trim($this->prodi->jenjang).' ' : '';
 
-            return trim($jenjang . $this->prodi->nama);
+            return trim($jenjang.$this->prodi->nama);
         }
 
         return '-';

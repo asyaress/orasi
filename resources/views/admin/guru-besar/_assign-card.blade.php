@@ -6,6 +6,7 @@
     class="guru-assign-card"
     data-id="{{ $guruBesar->id }}"
     data-nama="{{ $guruBesar->nama }}"
+    data-urutan="{{ $guruBesar->urutan }}"
     @if ($isAssigned && isset($orasi))
         data-detach-url="{{ route('admin.orasi-ilmiah.guru-besar.detach', [$orasi, $guruBesar]) }}"
     @endif

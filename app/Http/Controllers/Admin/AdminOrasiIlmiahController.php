@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\GuruBesar;
 use App\Models\OrasiIlmiah;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -29,7 +30,7 @@ class AdminOrasiIlmiahController extends Controller
     {
         $data = $this->validateOrasi($request);
 
-        $orasi = new OrasiIlmiah();
+        $orasi = new OrasiIlmiah;
         $orasi->fill($data);
         $this->handleUploads($request, $orasi);
         $orasi->save();
@@ -39,9 +40,13 @@ class AdminOrasiIlmiahController extends Controller
 
     public function show(OrasiIlmiah $orasiIlmiah)
     {
-        $orasiIlmiah->load(['guruBesars.fakultas', 'guruBesars.prodi']);
+        $orasiIlmiah->load([
+            'guruBesars' => fn ($query) => $query->orderByUrutan(),
+            'guruBesars.fakultas',
+            'guruBesars.prodi',
+        ]);
 
-        $guruBesarTersedia = \App\Models\GuruBesar::query()
+        $guruBesarTersedia = GuruBesar::query()
             ->belumDitugaskan()
             ->orderBy('nama')
             ->get();
@@ -107,4 +112,3 @@ class AdminOrasiIlmiahController extends Controller
         }
     }
 }
-

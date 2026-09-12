@@ -8,6 +8,7 @@
     if (!root || typeof Sortable === 'undefined') return;
 
     const attachUrl = root.dataset.attachUrl;
+    const sortUrl = root.dataset.sortUrl;
     const csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
     const countBadge = document.getElementById('assigned-count');
     const listAvailable = document.getElementById('list-available');
@@ -17,6 +18,19 @@
     const emptyAssigned = document.getElementById('empty-assigned');
 
     let busy = false;
+    let assignedOrderBeforeDrag = [];
+
+    function assignedIds() {
+        return [...listAssigned.querySelectorAll('.guru-assign-card')]
+            .map((card) => parseInt(card.dataset.id, 10))
+            .filter(Boolean);
+    }
+
+    async function saveAssignedOrder() {
+        if (!sortUrl) throw new Error('URL penyimpanan urutan tidak valid.');
+
+        return apiFetch(sortUrl, 'PUT', { guru_besar_ids: assignedIds() });
+    }
 
     function updateCounts() {
         const a = listAvailable.querySelectorAll('.guru-assign-card:not(.d-none)').length;
@@ -86,14 +100,25 @@
 
         try {
             const data = await apiFetch(attachUrl, 'POST', { guru_besar_id: id });
+            let orderSaved = true;
             if (data.guru?.html_assigned) {
                 const temp = document.createElement('div');
                 temp.innerHTML = data.guru.html_assigned.trim();
                 const fresh = temp.firstElementChild;
                 card.replaceWith(fresh);
             }
+            try {
+                await saveAssignedOrder();
+            } catch (orderError) {
+                orderSaved = false;
+                const assignedCard = listAssigned.querySelector(`[data-id="${id}"]`);
+                if (assignedCard) listAssigned.appendChild(assignedCard);
+                if (window.AdminAlert) {
+                    AdminAlert.warning('Guru besar berhasil ditugaskan, tetapi posisi pilihannya belum tersimpan. Kartu ditempatkan di urutan terakhir.');
+                }
+            }
             updateCounts();
-            if (window.AdminAlert) {
+            if (orderSaved && window.AdminAlert) {
                 AdminAlert.toast(data.success ? 'success' : 'warning', data.message);
             }
         } catch (err) {
@@ -175,10 +200,28 @@
         },
     });
 
-    Sortable.create(listAssigned, {
+    const assignedSortable = Sortable.create(listAssigned, {
         ...sortableOpts,
+        onStart() {
+            assignedOrderBeforeDrag = assignedIds();
+        },
         onAdd(evt) {
             if (evt.from === listAvailable) onAddToAssigned(evt);
+        },
+        async onUpdate() {
+            if (busy) return;
+
+            busy = true;
+            try {
+                const data = await saveAssignedOrder();
+                if (window.AdminAlert) AdminAlert.toast('success', data.message);
+            } catch (err) {
+                assignedSortable.sort(assignedOrderBeforeDrag.map(String));
+                if (window.AdminAlert) AdminAlert.fromFetchError(err, 'Gagal menyimpan urutan guru besar.');
+            } finally {
+                busy = false;
+                assignedOrderBeforeDrag = [];
+            }
         },
     });
 

@@ -65,7 +65,7 @@ class OrasiDocumentMergeService
         $outputPdf = $outputPath.'.pdf';
         @unlink($outputPath);
 
-        $pdf = new Fpdi();
+        $pdf = new Fpdi;
         $pdf->SetAutoPageBreak(false);
 
         foreach ($pdfSources as $source) {
@@ -146,7 +146,7 @@ class OrasiDocumentMergeService
             })
             ->select('guru_besars.*')
             ->orderByDesc('orasi_ilmiahs.tahun')
-            ->orderByTmtAscending()
+            ->orderByUrutan()
             ->get();
     }
 

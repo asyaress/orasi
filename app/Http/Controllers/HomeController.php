@@ -71,7 +71,7 @@ class HomeController extends Controller
                 ->where('id', '!=', $guruBesar->id)
                 ->get()
                 ->filter(fn (GuruBesar $item) => $item->archiveYear() === $guruBesar->archiveYear());
-            $relatedByYear = GuruBesar::sortByTmtAscending($relatedByYear);
+            $relatedByYear = GuruBesar::sortByUrutan($relatedByYear);
         }
 
         return view('pages.guru-besar-show', [
@@ -308,19 +308,28 @@ class HomeController extends Controller
             ->orderByRaw("case when orasi_ilmiahs.status = 'published' then 0 else 1 end")
             ->orderByDesc('orasi_ilmiahs.tahun')
             ->orderByDesc('orasi_ilmiahs.tanggal_pelaksanaan')
+            ->orderByUrutan()
             ->select('guru_besars.*')
             ->first();
 
         $featuredOrasi = $featuredGuru?->orasiIlmiah
             ?? OrasiIlmiah::query()
-                ->with(['guruBesars.fakultas', 'guruBesars.prodi'])
+                ->with([
+                    'guruBesars' => fn ($query) => $query->orderByUrutan(),
+                    'guruBesars.fakultas',
+                    'guruBesars.prodi',
+                ])
                 ->whereIn('status', $publicStatuses)
                 ->orderByRaw("case when status = 'published' then 0 else 1 end")
                 ->orderByDesc('tahun')
                 ->orderByDesc('tanggal_pelaksanaan')
                 ->first()
             ?? OrasiIlmiah::query()
-                ->with(['guruBesars.fakultas', 'guruBesars.prodi'])
+                ->with([
+                    'guruBesars' => fn ($query) => $query->orderByUrutan(),
+                    'guruBesars.fakultas',
+                    'guruBesars.prodi',
+                ])
                 ->orderByDesc('tahun')
                 ->orderByDesc('tanggal_pelaksanaan')
                 ->first();
@@ -342,7 +351,7 @@ class HomeController extends Controller
             )
             ->select('guru_besars.*')
             ->orderByDesc('orasi_ilmiahs.tahun')
-            ->orderByTmtAscending()
+            ->orderByUrutan()
             ->get();
 
         $latestVideos = GuruBesar::query()
@@ -353,7 +362,7 @@ class HomeController extends Controller
             ->where('guru_besars.youtube_url', '!=', '')
             ->select('guru_besars.*')
             ->orderByDesc('orasi_ilmiahs.tahun')
-            ->orderByTmtAscending()
+            ->orderByUrutan()
             ->get();
 
         $latestVideos->each(function (GuruBesar $video) {
@@ -363,7 +372,7 @@ class HomeController extends Controller
         $orasiHighlights = OrasiIlmiah::query()
             ->with([
                 'guruBesars' => function ($query) {
-                    $query->orderByTmtAscending();
+                    $query->orderByUrutan();
                 },
             ])
             ->withCount('guruBesars')
@@ -389,7 +398,7 @@ class HomeController extends Controller
             })
             ->select('guru_besars.*')
             ->orderByDesc('orasi_ilmiahs.tahun')
-            ->orderByTmtAscending()
+            ->orderByUrutan()
             ->get();
 
         $archiveYears = OrasiIlmiah::query()

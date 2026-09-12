@@ -8,6 +8,7 @@ use App\Models\OrasiIlmiah;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class AdminOrasiGuruBesarController extends Controller
@@ -81,6 +82,7 @@ class AdminOrasiGuruBesarController extends Controller
 
         $nama = $guruBesar->nama;
         $guruBesar->orasi_ilmiah_id = null;
+        $guruBesar->urutan = null;
         $guruBesar->save();
         $guruBesar->load(['fakultas', 'prodi']);
 
@@ -99,32 +101,79 @@ class AdminOrasiGuruBesarController extends Controller
             ->with('success', $message);
     }
 
+    public function reorder(Request $request, OrasiIlmiah $orasiIlmiah): JsonResponse
+    {
+        $data = $request->validate([
+            'guru_besar_ids' => ['required', 'array', 'min:1'],
+            'guru_besar_ids.*' => ['required', 'integer', 'distinct', 'exists:guru_besars,id'],
+        ]);
+
+        $requestedIds = collect($data['guru_besar_ids'])
+            ->map(fn ($id) => (int) $id)
+            ->values();
+
+        DB::transaction(function () use ($orasiIlmiah, $requestedIds): void {
+            $assignedIds = GuruBesar::query()
+                ->where('orasi_ilmiah_id', $orasiIlmiah->id)
+                ->lockForUpdate()
+                ->pluck('id')
+                ->map(fn ($id) => (int) $id);
+
+            if ($assignedIds->sort()->values()->all() !== $requestedIds->sort()->values()->all()) {
+                throw ValidationException::withMessages([
+                    'guru_besar_ids' => 'Daftar urutan harus memuat semua guru besar pada orasi ini.',
+                ]);
+            }
+
+            foreach ($requestedIds as $index => $guruBesarId) {
+                GuruBesar::query()
+                    ->whereKey($guruBesarId)
+                    ->update(['urutan' => $index + 1]);
+            }
+        });
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Urutan guru besar berhasil disimpan dan akan digunakan di website.',
+        ]);
+    }
+
     /** @return array{status: string, guru?: GuruBesar, message?: string} */
     private function assignGuruToOrasi(int $guruId, OrasiIlmiah $orasiIlmiah): array
     {
-        $guru = GuruBesar::query()->with(['fakultas', 'prodi'])->find($guruId);
+        return DB::transaction(function () use ($guruId, $orasiIlmiah): array {
+            OrasiIlmiah::query()->whereKey($orasiIlmiah->id)->lockForUpdate()->first();
 
-        if (! $guru) {
-            return ['status' => 'error', 'message' => "Guru besar #{$guruId} tidak ditemukan."];
-        }
+            $guru = GuruBesar::query()
+                ->with(['fakultas', 'prodi'])
+                ->lockForUpdate()
+                ->find($guruId);
 
-        if ($guru->orasi_ilmiah_id && (int) $guru->orasi_ilmiah_id !== (int) $orasiIlmiah->id) {
-            $tahunLain = OrasiIlmiah::query()->find($guru->orasi_ilmiah_id)?->tahun;
+            if (! $guru) {
+                return ['status' => 'error', 'message' => "Guru besar #{$guruId} tidak ditemukan."];
+            }
 
-            return [
-                'status' => 'error',
-                'message' => "{$guru->nama} sudah terdaftar di Orasi ".($tahunLain ?: 'lain').'. Lepas dulu dari orasi tersebut.',
-            ];
-        }
+            if ($guru->orasi_ilmiah_id && (int) $guru->orasi_ilmiah_id !== (int) $orasiIlmiah->id) {
+                $tahunLain = OrasiIlmiah::query()->find($guru->orasi_ilmiah_id)?->tahun;
 
-        if ((int) $guru->orasi_ilmiah_id === (int) $orasiIlmiah->id) {
-            return ['status' => 'skipped', 'message' => "{$guru->nama} sudah ada di orasi ini."];
-        }
+                return [
+                    'status' => 'error',
+                    'message' => "{$guru->nama} sudah terdaftar di Orasi ".($tahunLain ?: 'lain').'. Lepas dulu dari orasi tersebut.',
+                ];
+            }
 
-        $guru->orasi_ilmiah_id = $orasiIlmiah->id;
-        $guru->save();
+            if ((int) $guru->orasi_ilmiah_id === (int) $orasiIlmiah->id) {
+                return ['status' => 'skipped', 'message' => "{$guru->nama} sudah ada di orasi ini."];
+            }
 
-        return ['status' => 'attached', 'guru' => $guru->fresh(['fakultas', 'prodi'])];
+            $guru->orasi_ilmiah_id = $orasiIlmiah->id;
+            $guru->urutan = ((int) GuruBesar::query()
+                ->where('orasi_ilmiah_id', $orasiIlmiah->id)
+                ->max('urutan')) + 1;
+            $guru->save();
+
+            return ['status' => 'attached', 'guru' => $guru->fresh(['fakultas', 'prodi'])];
+        });
     }
 
     private function buildAttachMessage(OrasiIlmiah $orasi, array $attached, array $skipped, array $errors): string
@@ -157,6 +206,7 @@ class AdminOrasiGuruBesarController extends Controller
         return [
             'id' => $guru->id,
             'nama' => $guru->nama,
+            'urutan' => $guru->urutan,
             'html_available' => view('admin.guru-besar._assign-card', [
                 'guruBesar' => $guru,
                 'list' => 'available',
